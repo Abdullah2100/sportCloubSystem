@@ -132,8 +132,8 @@ namespace sportDataLayer
 
                     con.Open();
                     string query = @"
-                                  INSERT INTO Coaches (personID,startTraingDate,personalImage,isActive)
-                                  VALUES(@personID,@startTraingDate,@personalImage,@isActive);
+                                  INSERT INTO Coaches (personID,startTraingDate,isActive)
+                                  VALUES(@personID,@startTraingDate,@isActive);
                                   select SCOPE_IDENTITY();";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
@@ -263,7 +263,7 @@ namespace sportDataLayer
                                      select c.coacheID ,p.personID, c.startTraingDate,
                                      (p.fristName+' '+p.secondName+' '+p.thirdName+' '+ p.familyName ) as fullName,
                                      case when p.gender = 1 then 'Male' else 'Female' end as gender,p.brithday,n.name as nationality
-                                     ,p.phone , c.isActive as isActive , c.personalImage,c.endTraingDate
+                                     ,p.phone , c.isActive as isActive , c.endTraingDate
                                      from Peoples p inner join Nationalitys n on p.nationalityID = n.nationalityID
                                      inner join Coaches c on c.personID = p.personID
                                     ";

@@ -19,7 +19,6 @@ namespace SportCllubeBuisness
         public int personID { get; set; }
         public DateTime startTraingDate { get; set; }
         public DateTime? endTraingDate { get; set; }
-        public string personalImage { get; set; }
         public bool isActive  { get; set; }
             
        
@@ -32,12 +31,11 @@ namespace SportCllubeBuisness
             this.personID = 0;
             this.startTraingDate = DateTime.Now;
             this.endTraingDate = null;
-            this.personalImage = "";
             this.isActive = true;
 
         }
     
-        private clsCoachBuisness(enCoachMode mode, int id, int personID, DateTime startTraingDate, DateTime? endTraingDate, string personalImage, bool isActive)
+        private clsCoachBuisness(enCoachMode mode, int id, int personID, DateTime startTraingDate, DateTime? endTraingDate, bool isActive)
         {
             clsPeopleBuisness personInfo = clsPeopleBuisness.findPeopleByID(personID);
             base.mode = personInfo.mode;
@@ -56,7 +54,6 @@ namespace SportCllubeBuisness
             this.personID = personID;
             this.startTraingDate = startTraingDate;
             this.endTraingDate = endTraingDate;
-            this.personalImage = personalImage;
             this.isActive = isActive;
 
         }
@@ -68,11 +65,11 @@ namespace SportCllubeBuisness
             int personID = 0;
             DateTime startTraingDate = DateTime.Now;
             DateTime? endTraingDate = null;
-            string personalImage = "";
-                bool isActive = false;
-            if (clsCoachData.findCoachByID(id, ref personID, ref startTraingDate, ref endTraingDate, ref personalImage, ref isActive))
+            bool isActive = false;
+
+            if (clsCoachData.findCoachByID(id, ref personID, ref startTraingDate, ref endTraingDate, ref isActive))
             {
-                return new  clsCoachBuisness(enCoachMode.update,id,  personID,  startTraingDate,  endTraingDate,  personalImage,  isActive); ;
+                return new  clsCoachBuisness(enCoachMode.update,id,  personID,  startTraingDate,  endTraingDate, isActive); ;
             }
             
             return null;
@@ -84,11 +81,10 @@ namespace SportCllubeBuisness
             int id = 0;
             DateTime startTraingDate = DateTime.Now;
             DateTime? endTraingDate = null;
-            string personalImage = "";
             bool isActive = false;
-            if (clsCoachData.findCoachByPersonID(ref id,  personID, ref startTraingDate, ref endTraingDate, ref personalImage, ref isActive))
+            if (clsCoachData.findCoachByPersonID(ref id,  personID, ref startTraingDate, ref endTraingDate,  ref isActive))
             {
-                return new clsCoachBuisness(enCoachMode.update, id, personID, startTraingDate, endTraingDate, personalImage, isActive); ;
+                return new clsCoachBuisness(enCoachMode.update, id, personID, startTraingDate, endTraingDate, isActive); ;
             }
 
             return null;
@@ -100,7 +96,6 @@ namespace SportCllubeBuisness
                   this.personID ,
                   this.startTraingDate,
                   this.endTraingDate,
-                  this.personalImage ,
                   this.isActive
                 );
             return (this.id != 0);
@@ -113,7 +108,6 @@ namespace SportCllubeBuisness
                 this.personID,
                 this.startTraingDate,
                 this.endTraingDate,
-                this.personalImage,
                 this.isActive) ;
         }
    
