@@ -1,0 +1,9 @@
+C:\Users\ali77\source\repos\Sporte Clube System\SportCllubeBuisness\bin\Debug\SportCllubeBuisness.dll
+C:\Users\ali77\source\repos\Sporte Clube System\SportCllubeBuisness\bin\Debug\SportCllubeBuisness.pdb
+C:\Users\ali77\source\repos\Sporte Clube System\SportCllubeBuisness\bin\Debug\sportDataLayer.dll
+C:\Users\ali77\source\repos\Sporte Clube System\SportCllubeBuisness\bin\Debug\sportDataLayer.pdb
+C:\Users\ali77\source\repos\Sporte Clube System\SportCllubeBuisness\obj\Debug\SportCllubeBuisness.csproj.AssemblyReference.cache
+C:\Users\ali77\source\repos\Sporte Clube System\SportCllubeBuisness\obj\Debug\SportCllubeBuisness.csproj.CoreCompileInputs.cache
+C:\Users\ali77\source\repos\Sporte Clube System\SportCllubeBuisness\obj\Debug\SportCllubeBuisness.csproj.CopyComplete
+C:\Users\ali77\source\repos\Sporte Clube System\SportCllubeBuisness\obj\Debug\SportCllubeBuisness.dll
+C:\Users\ali77\source\repos\Sporte Clube System\SportCllubeBuisness\obj\Debug\SportCllubeBuisness.pdb

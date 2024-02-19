@@ -1,0 +1,6 @@
+C:\Users\ali77\source\repos\Sporte Clube System\sportDataLayer\bin\Debug\sportDataLayer.dll
+C:\Users\ali77\source\repos\Sporte Clube System\sportDataLayer\bin\Debug\sportDataLayer.pdb
+C:\Users\ali77\source\repos\Sporte Clube System\sportDataLayer\obj\Debug\sportDataLayer.csproj.AssemblyReference.cache
+C:\Users\ali77\source\repos\Sporte Clube System\sportDataLayer\obj\Debug\sportDataLayer.csproj.CoreCompileInputs.cache
+C:\Users\ali77\source\repos\Sporte Clube System\sportDataLayer\obj\Debug\sportDataLayer.dll
+C:\Users\ali77\source\repos\Sporte Clube System\sportDataLayer\obj\Debug\sportDataLayer.pdb
