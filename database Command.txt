@@ -1,0 +1,75 @@
+create  database ClubeSportDB
+
+use ClubeSportDB
+
+create table Sports(
+sportID int identity(1,1) primary key,
+name nvarchar(50) not null,
+createdDate datetime default GETDATE(),
+isActive bit default 1)
+
+create table SubscriptionTypes(
+subscriptionTypeID smallint primary key,
+feeMultiplyBy money  not null,
+daysNumber smallint
+)
+
+create table Nationalitys(
+nationalityID int primary key ,
+name nvarchar  (20))
+
+create table Peoples(
+personIDint identity(1,1) primary key,
+fristName nvarchar(20) not null,
+secondName nvarchar(20) not null,
+thirdName nvarchar(20) not null,
+familyName nvarchar(20) not null,
+brithday datetime not null,
+gender bit not null,
+nationalityID int references Nationalitys(nationalityID) ,
+address nvarchar(200) not null,
+phone nvarchar(15) not null)
+
+Create table Nationality(
+nationalityID int identity(1,1) primary key,
+name nvarchar(20) not null)
+
+
+create table People(
+personID int identity(1,1) primary key,
+fristName nvarchar(20) not null,
+secondName nvarchar(20) not null,
+thirdName nvarchar(20) not null,
+familyName nvarchar(20) not null,
+brithday Datetime not null,
+gender bit not null,
+nationalityID int references Nationalitys(nationalityID),
+address nvarchar(200) not null,
+phone nvarchar(15) not null
+)
+
+create table Members(
+memberID int identity(1,1) primary key,
+personID int references Peoples(personID),
+isActive bit default(1)
+)
+
+
+create table Coaches(
+coacheID int identity(1,1) primary key,
+personID int references Peoples(personID),
+startTraingDate Datetime default getDate(),
+endTraingDate Datetime null,
+personalImage nvarchar(max)not null,
+isActive bit default 1
+)
+
+create table CoachesTrainging(
+CoachsTraingingID int identity(1,1)primary key,
+sportID int not null references Sports(sportID),
+isAvaliable bit default 1,
+dayilyStartAt nvarchar(10) not null,
+dayilyEndAt nvarchar(10) not null,
+trainingDay int null,
+fee money not null
+) 

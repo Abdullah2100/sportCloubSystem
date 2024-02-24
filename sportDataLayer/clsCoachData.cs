@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -55,6 +57,7 @@ namespace sportDataLayer
 
             }catch(Exception ex)
             {
+               clsAppEventHandler.createNewEventLog(ex.Message);
                 Console.WriteLine("Error is : "+ex.Message);
             }
             return isFound;
@@ -107,6 +110,8 @@ namespace sportDataLayer
             }
             catch (Exception ex)
             {
+                clsAppEventHandler.createNewEventLog(ex.Message);
+
                 Console.WriteLine("Error is : " + ex.Message);
             }
             return isFound;
@@ -154,6 +159,8 @@ namespace sportDataLayer
             }
             catch (Exception ex)
             {
+                clsAppEventHandler.createNewEventLog(ex.Message);
+
                 Console.WriteLine("Error is : " + ex.Message);
             }
             return id;
@@ -205,6 +212,8 @@ namespace sportDataLayer
             }
             catch (Exception ex)
             {
+                clsAppEventHandler.createNewEventLog(ex.Message);
+
                 Console.WriteLine("Error is : " + ex.Message);
             }
             return isUpdated;
@@ -259,8 +268,7 @@ namespace sportDataLayer
                 using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
                 {
                     con.Open();
-                    string query = @"
-                                     select c.coacheID ,p.personID, c.startTraingDate,
+                    string query = @" select c.coacheID ,p.personID, c.startTraingDate,
                                      (p.fristName+' '+p.secondName+' '+p.thirdName+' '+ p.familyName ) as fullName,
                                      case when p.gender = 1 then 'Male' else 'Female' end as gender,p.brithday,n.name as nationality
                                      ,p.phone , c.isActive as isActive , c.endTraingDate
@@ -281,6 +289,8 @@ namespace sportDataLayer
             }
             catch (Exception ex)
             {
+                clsAppEventHandler.createNewEventLog(ex.Message);
+
                 Console.WriteLine("Error is :" + ex.Message);
             }
             return dtPoepleList;
@@ -320,6 +330,8 @@ namespace sportDataLayer
             }
             catch (Exception ex)
             {
+                clsAppEventHandler.createNewEventLog(ex.Message);
+
                 Console.WriteLine("Error is :" + ex.Message);
             }
             return isAdd;
@@ -363,6 +375,8 @@ namespace sportDataLayer
             }
             catch (Exception ex)
             {
+                clsAppEventHandler.createNewEventLog(ex.Message);
+
                 Console.WriteLine("Error is : " + ex.Message);
             }
             return isUpdated;
@@ -445,6 +459,8 @@ namespace sportDataLayer
             }
             catch (Exception ex)
             {
+                clsAppEventHandler.createNewEventLog(ex.Message);
+
                 Console.WriteLine("Error is : " + ex.Message);
             }
             return isUpdated;
