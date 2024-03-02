@@ -1,43 +1,39 @@
-﻿using sportDataLayer.Util;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace sportDataLayer
 {
     public class clsCoachData
     {
+        static string connectionUrl = ConfigurationManager.ConnectionStrings["conncetionUrl"].ConnectionString;
+
         public static bool findCoachByID
             (
             int id,
-            ref int personID ,
-            ref DateTime startTraingDate, 
-            ref DateTime? endTraingDate ,
-            ref bool isActive )
+            ref int personID,
+            ref DateTime startTraingDate,
+            ref DateTime? endTraingDate,
+            ref bool isActive)
         {
             bool isFound = false;
             try
             {
 
-            
-                using(SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
-               
-                   
+
+
                     con.Open();
                     string query = @"select * from Coaches where coacheID = @id";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@id", id);
-                        using(SqlDataReader reader = cmd.ExecuteReader())
+                        using (SqlDataReader reader = cmd.ExecuteReader())
                         {
-                            if(reader.Read())
+                            if (reader.Read())
                             {
                                 isFound = true;
                                 personID = (int)reader["personID"];
@@ -55,10 +51,11 @@ namespace sportDataLayer
 
                 }
 
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
-               clsAppEventHandler.createNewEventLog(ex.Message);
-                Console.WriteLine("Error is : "+ex.Message);
+                clsAppEventHandler.createNewEventLog(ex.Message);
+                Console.WriteLine("Error is : " + ex.Message);
             }
             return isFound;
 
@@ -78,7 +75,7 @@ namespace sportDataLayer
             {
 
 
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
 
 
@@ -131,7 +128,7 @@ namespace sportDataLayer
             {
 
 
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
 
 
@@ -146,9 +143,9 @@ namespace sportDataLayer
                         cmd.Parameters.AddWithValue("@startTraingDate", personID);
                         cmd.Parameters.AddWithValue("@isActive", personID);
                         object result = cmd.ExecuteScalar();
-                        if (result != null && int.TryParse(result.ToString(),out int cachID))
+                        if (result != null && int.TryParse(result.ToString(), out int cachID))
                         {
-                            id= cachID;
+                            id = cachID;
                         }
 
                     }
@@ -181,7 +178,7 @@ namespace sportDataLayer
             {
 
 
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
 
 
@@ -199,7 +196,7 @@ namespace sportDataLayer
                         cmd.Parameters.AddWithValue("@startTraingDate", personID);
                         cmd.Parameters.AddWithValue("@isActive", personID);
                         int result = cmd.ExecuteNonQuery();
-                        if (result>0)
+                        if (result > 0)
                         {
                             isUpdated = true;
                         }
@@ -222,14 +219,14 @@ namespace sportDataLayer
 
 
 
-        public static bool deleteCoach ( int id )
+        public static bool deleteCoach(int id)
         {
             bool isUpdated = false;
             try
             {
 
 
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
 
 
@@ -239,7 +236,7 @@ namespace sportDataLayer
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@id", id);
-                                              
+
                         int result = cmd.ExecuteNonQuery();
                         if (result > 0)
                         {
@@ -265,7 +262,7 @@ namespace sportDataLayer
             DataTable dtPoepleList = new DataTable();
             try
             {
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
                     string query = @" select c.coacheID ,p.personID, c.startTraingDate,
@@ -307,7 +304,7 @@ namespace sportDataLayer
             bool isAdd = false;
             try
             {
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
                     string query = @"update Coaches set
@@ -341,14 +338,14 @@ namespace sportDataLayer
 
 
 
-        public static bool isCoachActive  (int id )
+        public static bool isCoachActive(int id)
         {
             bool isUpdated = false;
             try
             {
 
 
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
 
 
@@ -391,7 +388,7 @@ namespace sportDataLayer
             {
 
 
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
 
 
@@ -432,7 +429,7 @@ namespace sportDataLayer
             {
 
 
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
 
 

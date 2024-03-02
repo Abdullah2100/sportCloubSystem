@@ -1,21 +1,21 @@
-﻿using sportDataLayer.Util;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace sportDataLayer
 {
     public class clsNationalityData
     {
-        public static bool findNationalityByID(int id,ref string name)
+        static string connectionUrl = ConfigurationManager.ConnectionStrings["conncetionUrl"].ConnectionString;
+
+        public static bool findNationalityByID(int id, ref string name)
         {
-            bool isFound =false;
-           
-            try{ using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+            bool isFound = false;
+
+            try
+            {
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
                     string query = @"select * from Nationalitys where nationalityID = @id";
@@ -34,19 +34,21 @@ namespace sportDataLayer
                     }
 
                 }
-            }catch(Exception ex){
-                Console.WriteLine("Error is :" +ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error is :" + ex.Message);
             }
             return isFound;
         }
 
-        public static bool findNationalityByName(ref int id,  string name)
+        public static bool findNationalityByName(ref int id, string name)
         {
             bool isFound = false;
 
             try
             {
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
                     string query = @"select * from Nationalitys where name =@name";
@@ -56,10 +58,10 @@ namespace sportDataLayer
                         cmd.Parameters.AddWithValue("@name", name);
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
-                            if(reader.Read())
+                            if (reader.Read())
                             {
-                            isFound = true;
-                            id = (int)reader["nationalityID"];
+                                isFound = true;
+                                id = (int)reader["nationalityID"];
                             }
                         }
                     }
@@ -80,7 +82,7 @@ namespace sportDataLayer
 
             try
             {
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
                     string query = @"select * from Nationalitys ";
@@ -90,7 +92,7 @@ namespace sportDataLayer
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
 
-                            if(reader.HasRows) 
+                            if (reader.HasRows)
                                 dtNaionalties.Load(reader);
                         }
                     }
@@ -112,7 +114,7 @@ namespace sportDataLayer
 
             try
             {
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
                     string query = @"Update   Nationalitys  set   name =@name where nationalityID = id";
@@ -122,7 +124,7 @@ namespace sportDataLayer
                         cmd.Parameters.AddWithValue("@name", name);
                         cmd.Parameters.AddWithValue("@id", id);
                         int result = cmd.ExecuteNonQuery();
-                        if (result>0)
+                        if (result > 0)
                         {
                             isUpdate = true;
                         }

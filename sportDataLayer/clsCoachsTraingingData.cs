@@ -1,12 +1,12 @@
-﻿using sportDataLayer.Util;
-using System;
+﻿using System;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-
 namespace sportDataLayer
 {
     public class clsCoachsTraingingData
     {
+        static string connectionUrl = ConfigurationManager.ConnectionStrings["conncetionUrl"].ConnectionString;
         public static bool findCoachsTrainging(
              int id,
              ref int coacheID,
@@ -25,7 +25,7 @@ namespace sportDataLayer
             try
             {
 
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
                     using (SqlCommand cmd = new SqlCommand(query, con))
@@ -83,7 +83,7 @@ namespace sportDataLayer
             try
             {
 
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
                     using (SqlCommand cmd = new SqlCommand(query, con))
@@ -144,7 +144,7 @@ namespace sportDataLayer
             try
             {
 
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
                     using (SqlCommand cmd = new SqlCommand(query, con))
@@ -193,7 +193,7 @@ namespace sportDataLayer
             try
             {
 
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
                     using (SqlCommand cmd = new SqlCommand(query, con))
@@ -235,7 +235,7 @@ namespace sportDataLayer
             try
             {
 
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
                     using (SqlCommand cmd = new SqlCommand(query, con))
@@ -272,7 +272,7 @@ namespace sportDataLayer
             try
             {
 
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
                     using (SqlCommand cmd = new SqlCommand(query, con))
@@ -305,10 +305,10 @@ namespace sportDataLayer
             try
             {
 
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
-                    string query = @"select * from CoachsTrainging";
+                    string query = @"select * from CoachesTraing";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
 
@@ -333,10 +333,10 @@ namespace sportDataLayer
             try
             {
 
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
-                    string query = @"select * from CoachsTrainging where CoachsTraingingID = @id";
+                    string query = @"select * from CoachesTraing where CoachsTraingingID = @id";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.Add("@id", id);
@@ -365,7 +365,7 @@ namespace sportDataLayer
             try
             {
 
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
                     using (SqlCommand cmd = new SqlCommand(query, con))
@@ -402,7 +402,7 @@ namespace sportDataLayer
             try
             {
 
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
                     using (SqlCommand cmd = new SqlCommand(query, con))
@@ -428,7 +428,7 @@ namespace sportDataLayer
                 Console.WriteLine("errror is : " + ex.Message);
             }
 
-            return isFound;
+            return isActive;
         }
 
 

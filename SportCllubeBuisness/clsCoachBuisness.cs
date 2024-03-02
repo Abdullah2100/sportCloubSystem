@@ -1,32 +1,25 @@
 ﻿using sportDataLayer;
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Net;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
-using static SportCllubeBuisness.clsPeopleBuisness;
 
 namespace SportCllubeBuisness
 {
-    public class clsCoachBuisness:clsPeopleBuisness
+    public class clsCoachBuisness : clsPeopleBuisness
     {
-      public enum enCoachMode { add, update};
-        public enCoachMode mode {  get; set; }
-        public    int id { get; set; }
+        public enum enMode { add, update };
+        public enMode mode { get; set; }
+        public int id { get; set; }
         public int personID { get; set; }
         public DateTime startTraingDate { get; set; }
         public DateTime? endTraingDate { get; set; }
-        public bool isActive  { get; set; }
-            
-       
+        public bool isActive { get; set; }
+
+
 
         public clsCoachBuisness()
         {
 
-            this.mode = enCoachMode.add;
+            this.mode = enMode.add;
             this.id = 0;
             this.personID = 0;
             this.startTraingDate = DateTime.Now;
@@ -34,20 +27,20 @@ namespace SportCllubeBuisness
             this.isActive = true;
 
         }
-    
-        private clsCoachBuisness(enCoachMode mode, int id, int personID, DateTime startTraingDate, DateTime? endTraingDate, bool isActive)
+
+        private clsCoachBuisness(enMode mode, int id, int personID, DateTime startTraingDate, DateTime? endTraingDate, bool isActive)
         {
             clsPeopleBuisness personInfo = clsPeopleBuisness.findPeopleByID(personID);
             base.mode = personInfo.mode;
             base.id = personInfo.id;
             base.firstName = personInfo.firstName;
             base.secondName = personInfo.secondName;
-            base.thirdName =  personInfo.thirdName;
+            base.thirdName = personInfo.thirdName;
             base.familyName = personInfo.familyName;
-            base.brithday =     personInfo.brithday;
+            base.brithday = personInfo.brithday;
             base.gender = personInfo.gender;
             base.nationalityID = personInfo.nationalityID;
-            base.address = personInfo.address; 
+            base.address = personInfo.address;
             base.phone = personInfo.phone;
             this.mode = mode;
             this.id = id;
@@ -58,9 +51,9 @@ namespace SportCllubeBuisness
 
         }
 
-        
-      
-        public static  clsCoachBuisness findCoachByID (int id)
+
+
+        public static clsCoachBuisness findCoachByID(int id)
         {
             int personID = 0;
             DateTime startTraingDate = DateTime.Now;
@@ -69,9 +62,9 @@ namespace SportCllubeBuisness
 
             if (clsCoachData.findCoachByID(id, ref personID, ref startTraingDate, ref endTraingDate, ref isActive))
             {
-                return new  clsCoachBuisness(enCoachMode.update,id,  personID,  startTraingDate,  endTraingDate, isActive); ;
+                return new clsCoachBuisness(enMode.update, id, personID, startTraingDate, endTraingDate, isActive); ;
             }
-            
+
             return null;
         }
 
@@ -82,9 +75,9 @@ namespace SportCllubeBuisness
             DateTime startTraingDate = DateTime.Now;
             DateTime? endTraingDate = null;
             bool isActive = false;
-            if (clsCoachData.findCoachByPersonID(ref id,  personID, ref startTraingDate, ref endTraingDate,  ref isActive))
+            if (clsCoachData.findCoachByPersonID(ref id, personID, ref startTraingDate, ref endTraingDate, ref isActive))
             {
-                return new clsCoachBuisness(enCoachMode.update, id, personID, startTraingDate, endTraingDate, isActive); ;
+                return new clsCoachBuisness(enMode.update, id, personID, startTraingDate, endTraingDate, isActive); ;
             }
 
             return null;
@@ -92,8 +85,8 @@ namespace SportCllubeBuisness
 
         private bool _add()
         {
-            this.id= clsCoachData.createCoach(
-                  this.personID ,
+            this.id = clsCoachData.createCoach(
+                  this.personID,
                   this.startTraingDate,
                   this.endTraingDate,
                   this.isActive
@@ -108,18 +101,18 @@ namespace SportCllubeBuisness
                 this.personID,
                 this.startTraingDate,
                 this.endTraingDate,
-                this.isActive) ;
+                this.isActive);
         }
-   
-  
+
+
         public virtual bool save()
         {
-          
-            
 
-            switch(mode)
+
+
+            switch (mode)
             {
-                case enCoachMode.add:
+                case enMode.add:
                     {
                         if (_add())
                         {
@@ -127,22 +120,22 @@ namespace SportCllubeBuisness
                         }
                         return false;
                     }
-                case enCoachMode.update:
+                case enMode.update:
                     {
                         if (_update())
                             return true;
                         return false;
-                    } 
+                    }
             }
             return false;
-        } 
-   
-   
-        public static  DataTable getAllCoachs()
+        }
+
+
+        public static DataTable getAllCoachs()
         {
             return clsCoachData.getAllCoaches();
         }
-   
+
         public static bool deleteMemberByID(int id)
         {
             return clsCoachData.deleteCoach(id);
@@ -165,13 +158,13 @@ namespace SportCllubeBuisness
         }
         public static bool activateCoach(int id)
         {
-            return clsCoachData.UpdateCoachState(id,true);
+            return clsCoachData.UpdateCoachState(id, true);
         }
         public static bool deActivateCoach(int id)
         {
             return clsCoachData.UpdateCoachState(id, false);
         }
 
-       
+
     }
 }

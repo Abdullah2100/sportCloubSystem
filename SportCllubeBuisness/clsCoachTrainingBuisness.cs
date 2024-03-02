@@ -16,6 +16,10 @@ namespace SportCllubeBuisness
         public bool isAvaliable { get; set; }
         public double fee { get; set; }
 
+        public clsSportBuisness sportInfo { get; set; }
+
+        public clsCoachBuisness coachInfo { get; set; }
+
         public clsCoachTrainingBuisness()
         {
 
@@ -42,6 +46,8 @@ namespace SportCllubeBuisness
             this.dayilyEndAt = dayilyEndAt;
             this.isAvaliable = isAvaliable;
             this.fee = fee;
+            this.sportInfo = clsSportBuisness.findSport(sportID);
+            this.coachInfo = clsCoachBuisness.findCoachByID(coachID);
         }
 
         public static clsCoachTrainingBuisness findCoachTrainingByID(int id)

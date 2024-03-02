@@ -1,16 +1,14 @@
-﻿using sportDataLayer.Util;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
+﻿using System;
+using System.Configuration;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data.SqlClient;
 
 namespace sportDataLayer
 {
-    public  class clsMemberData
+    public class clsMemberData
     {
+        static string connectionUrl = ConfigurationManager.ConnectionStrings["conncetionUrl"].ConnectionString;
+
         public static bool findMemberByPersonID(
             ref int id,
             int personID,
@@ -20,7 +18,7 @@ namespace sportDataLayer
             bool isFound = false;
             try
             {
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
                     string query = @"select * from Members where personID = @personID";
@@ -50,7 +48,7 @@ namespace sportDataLayer
         }
 
         public static bool findMemberByID(
-     
+
             int id,
             ref int personID,
             ref bool isActive
@@ -59,7 +57,7 @@ namespace sportDataLayer
             bool isFound = false;
             try
             {
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
                     string query = @"select * from Members where memberID = @id";
@@ -102,7 +100,7 @@ namespace sportDataLayer
             int id = 0;
             try
             {
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
                     string query = @"insert into Members (personID,isActive)values (@personID,@isActive);
@@ -113,7 +111,7 @@ namespace sportDataLayer
 
                         cmd.Parameters.AddWithValue("@personID", personID);
                         cmd.Parameters.AddWithValue("@isActive", isActive);
-                      
+
                         object result = cmd.ExecuteScalar();
                         if (result != null && int.TryParse(result.ToString(), out int resultID))
                         {
@@ -137,7 +135,7 @@ namespace sportDataLayer
             bool isDelete = false;
             try
             {
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
                     string query = @"delete from Members where memberID = @id";
@@ -165,7 +163,7 @@ namespace sportDataLayer
 
 
         public static bool updateMember(
-          
+
             int id,
              int personID,
              bool isActive
@@ -174,7 +172,7 @@ namespace sportDataLayer
             bool isAdd = false;
             try
             {
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
                     string query = @"update Members set
@@ -212,7 +210,7 @@ namespace sportDataLayer
             DataTable dtPoepleList = new DataTable();
             try
             {
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
                     string query = @"
@@ -246,13 +244,13 @@ namespace sportDataLayer
 
 
         public static bool isMemberExistByPeopleID(
-            int peopleID 
+            int peopleID
             )
         {
             bool isFound = false;
             try
             {
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
                     string query = @"select found =1 from Members where phone = @peopleID";
@@ -278,12 +276,12 @@ namespace sportDataLayer
         }
 
 
-        public static bool isMemberExistByID(int id )
+        public static bool isMemberExistByID(int id)
         {
             bool isFound = false;
             try
             {
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
                     string query = @"select found =1 from Members where memberID = @id";
@@ -317,7 +315,7 @@ namespace sportDataLayer
             bool isAdd = false;
             try
             {
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
                     string query = @"update Members set
@@ -355,7 +353,7 @@ namespace sportDataLayer
             bool isFound = false;
             try
             {
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
                     string query = @"select found = 1 from Members where memberID = @id and isActive = 1 ";
@@ -368,7 +366,7 @@ namespace sportDataLayer
                             if (reader.Read())
                             {
                                 isFound = true;
-                                                    
+
                             }
                         }
                     }

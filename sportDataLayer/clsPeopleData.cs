@@ -1,44 +1,40 @@
-﻿using sportDataLayer.Util;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Net;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace sportDataLayer
 {
     public class clsPeoplesData
     {
+        static string connectionUrl = ConfigurationManager.ConnectionStrings["conncetionUrl"].ConnectionString;
+
         public static bool findPeoplesByID(
             int id,
-            ref string  fristName ,
-            ref string  secondName ,
-            ref string  thirdName ,
-            ref string  familyName,
-            ref DateTime  brithday ,
-            ref bool   gender ,
-            ref int  nationalityID,
-            ref string  address ,
-            ref string  phone )
+            ref string fristName,
+            ref string secondName,
+            ref string thirdName,
+            ref string familyName,
+            ref DateTime brithday,
+            ref bool gender,
+            ref int nationalityID,
+            ref string address,
+            ref string phone)
         {
             bool isFound = false;
             try
             {
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
                     string query = @"select * from Peoples where personID = @id";
-                    
+
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@id", id);
-                        using (SqlDataReader reader =  cmd.ExecuteReader()) 
+                        using (SqlDataReader reader = cmd.ExecuteReader())
                         {
-                            if(reader.Read())
+                            if (reader.Read())
                             {
                                 isFound = true;
                                 fristName = (string)reader["fristName"];
@@ -50,21 +46,80 @@ namespace sportDataLayer
                                 nationalityID = (int)reader["nationalityID"];
                                 address = (string)reader["address"];
                                 phone = (string)reader["phone"];
-                            } 
+                            }
                         }
                     }
 
                 }
-            }catch (Exception ex) { 
-            Console.WriteLine("Error is :"+ ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error is :" + ex.Message);
             }
             return isFound;
 
         }
 
 
+        public static bool findPeoplesByFullName(
+         string fullName,
+         ref int id,
+         ref string fristName,
+         ref string secondName,
+         ref string thirdName,
+         ref string familyName,
+         ref DateTime brithday,
+         ref bool gender,
+         ref int nationalityID,
+         ref string address,
+         ref string phone)
+        {
+            bool isFound = false;
+            try
+            {
+                using (SqlConnection con = new SqlConnection(connectionUrl))
+                {
+                    con.Open();
+                    string query = @"select * from Peoples p  where (p.fristName + ' '+p.secondName + ' ' + p.thirdName + ' ' + p.familyName) =@fullName  ";
+
+
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        cmd.Parameters.AddWithValue("@fullName", fullName);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                isFound = true;
+                                id = (int)reader["coacheID"];
+                                fristName = (string)reader["fristName"];
+                                secondName = (string)reader["secondName"];
+                                thirdName = (string)reader["thirdName"];
+                                familyName = (string)reader["familyName"];
+                                brithday = (DateTime)reader["brithday"];
+                                gender = (bool)reader["gender"];
+                                nationalityID = (int)reader["nationalityID"];
+                                address = (string)reader["address"];
+                                phone = (string)reader["phone"];
+                            }
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error is :" + ex.Message);
+            }
+            return isFound;
+
+        }
+
+
+
+
         public static bool findPeoplesByPhone(
-        ref  int id,
+        ref int id,
         ref string fristName,
         ref string secondName,
         ref string thirdName,
@@ -78,7 +133,7 @@ namespace sportDataLayer
             bool isFound = false;
             try
             {
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
                     string query = @"select * from Peoples where phone = @phone";
@@ -90,19 +145,19 @@ namespace sportDataLayer
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
 
-                            if(reader.Read())
+                            if (reader.Read())
                             {
-                            isFound = true;
-                            id = (int)reader["personID"];
-                            fristName = (string)reader["firstName"];
-                            secondName = (string)reader["secondName"];
-                            thirdName = (string)reader["thirdname"];
-                            familyName = (string)reader["familyName"];
-                            brithday = (DateTime)reader["brithDay"];
-                            gender = (bool)reader["gender"];
-                            nationalityID = (int)reader["nationalityID"];
-                            address = (string)reader["address"];
-                            phone = (string)reader["phone"];
+                                isFound = true;
+                                id = (int)reader["personID"];
+                                fristName = (string)reader["firstName"];
+                                secondName = (string)reader["secondName"];
+                                thirdName = (string)reader["thirdname"];
+                                familyName = (string)reader["familyName"];
+                                brithday = (DateTime)reader["brithDay"];
+                                gender = (bool)reader["gender"];
+                                nationalityID = (int)reader["nationalityID"];
+                                address = (string)reader["address"];
+                                phone = (string)reader["phone"];
                             }
                         }
                     }
@@ -131,10 +186,10 @@ namespace sportDataLayer
           string address,
           string phone)
         {
-            int peopleID= 0;
+            int peopleID = 0;
             try
             {
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
                     string query = @"insert into Peoples  
@@ -156,7 +211,7 @@ namespace sportDataLayer
                         cmd.Parameters.AddWithValue("@nationalityID", nationalityID);
                         cmd.Parameters.AddWithValue("@address", address);
                         object result = cmd.ExecuteScalar();
-                        if (result!=null && int.TryParse(result.ToString(),out int resultID))
+                        if (result != null && int.TryParse(result.ToString(), out int resultID))
                         {
                             peopleID = resultID;
                         }
@@ -172,20 +227,20 @@ namespace sportDataLayer
 
         }
 
-        
-        public static bool deletePoeplByID( int id)
+
+        public static bool deletePoeplByID(int id)
         {
             bool isDelete = false;
             try
             {
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
                     string query = @"delete from Peoples where personID = @id";
 
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
-                       
+
                         cmd.Parameters.AddWithValue("@id", id);
                         int result = cmd.ExecuteNonQuery();
                         if (result > 0)
@@ -204,22 +259,22 @@ namespace sportDataLayer
 
         }
 
-             public static bool updatePeoples(
-                int id,
-                string firstName,
-                string secondName,
-                string thirdName,
-                string familyName,
-                DateTime brithday,
-                bool gender,
-                int nationalityID,
-                string address,
-                string phone)
+        public static bool updatePeoples(
+           int id,
+           string firstName,
+           string secondName,
+           string thirdName,
+           string familyName,
+           DateTime brithday,
+           bool gender,
+           int nationalityID,
+           string address,
+           string phone)
         {
             bool isAdd = false;
             try
             {
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
                     string query = @"update Peoples set 
@@ -270,7 +325,7 @@ namespace sportDataLayer
             DataTable dtPoepleList = new DataTable();
             try
             {
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
                     string query = @"select p.personID,(p.fristName+' '+p.secondName+' '+p.thirdName+' '+ p.familyName ) as fullName,
@@ -304,7 +359,7 @@ namespace sportDataLayer
             bool isFound = false;
             try
             {
-                using (SqlConnection con = new SqlConnection(clsConnection.connectionUrl))
+                using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
                     string query = @"select found =1 from Peoples where phone = @phone";
@@ -314,7 +369,7 @@ namespace sportDataLayer
                         cmd.Parameters.AddWithValue("@phone", phone);
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
-                            if(reader.Read())
+                            if (reader.Read())
                                 isFound = true;
                         }
                     }
