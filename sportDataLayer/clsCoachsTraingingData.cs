@@ -15,7 +15,7 @@ namespace sportDataLayer
              ref string dayilyStartAt,
              ref string dayilyEndAt,
              ref int trainingDay,
-             ref double fee
+             ref decimal fee
              )
 
         {
@@ -37,12 +37,12 @@ namespace sportDataLayer
                             {
                                 isFound = true;
                                 sportID = (int)reader["sportID"];
-                                coacheID = (int)reader["coachID"];
+                                coacheID = (int)reader["coacheID"];
                                 isAvaliable = (bool)reader["isAvaliable"];
                                 dayilyStartAt = (string)reader["dayilyStartAt"];
                                 dayilyEndAt = (string)reader["dayilyEndAt"];
                                 trainingDay = (int)reader["trainingDay"];
-                                fee = (double)reader["fee"];
+                                fee = (decimal)reader["fee"];
 
                             }
                         }
@@ -73,7 +73,7 @@ namespace sportDataLayer
              ref string dayilyStartAt,
              ref string dayilyEndAt,
              ref int trainingDay,
-             ref double fee
+             ref decimal fee
              )
 
         {
@@ -100,7 +100,7 @@ namespace sportDataLayer
                                 dayilyStartAt = (string)reader["dayilyStartAt"];
                                 dayilyEndAt = (string)reader["dayilyEndAt"];
                                 trainingDay = (int)reader["trainingDay"];
-                                fee = (double)reader["fee"];
+                                fee = (decimal)reader["fee"];
 
                             }
                         }
@@ -131,13 +131,13 @@ namespace sportDataLayer
              string dayilyStartAt,
              string dayilyEndAt,
              int trainingDay,
-             double fee
+             decimal fee
             )
         {
             int id = 0;
             string query = @"
-                            insert into CoachsTrainging
-                            (coachID,sportID,isAvaliable,dayilyStartAt,dayilyEndAt,trainingDay,fee)
+                            insert into CoachesTrainging                        
+                            (coacheID,sportID,isAvaliable,dayilyStartAt,dayilyEndAt,trainingDay,fee)
                             values(@coachID,@sportID,@isAvaliable,@dayilyStartAt,@dayilyEndAt,@trainingDay,@fee) ;
                             select SCOPE_IDENTITY()";
 
@@ -149,7 +149,13 @@ namespace sportDataLayer
                     con.Open();
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
-                        cmd.Parameters.AddWithValue("@coacheID", coacheID);
+                        cmd.Parameters.AddWithValue("@coachID", coacheID);
+                        cmd.Parameters.AddWithValue("@sportID", sportID);
+                        cmd.Parameters.AddWithValue("@isAvaliable", isAvaliable);
+                        cmd.Parameters.AddWithValue("@dayilyStartAt", dayilyStartAt);
+                        cmd.Parameters.AddWithValue("@dayilyEndAt", dayilyEndAt);
+                        cmd.Parameters.AddWithValue("@trainingDay", trainingDay);
+                        cmd.Parameters.AddWithValue("@fee", fee);
                         object result = cmd.ExecuteScalar();
                         if (result != null && int.TryParse(result.ToString(), out int resultID))
                         {
@@ -177,19 +183,20 @@ namespace sportDataLayer
                  string dayilyStartAt,
                  string dayilyEndAt,
                  int trainingDay,
-                 double fee
+                 decimal fee
                 )
         {
             bool isUpdate = false;
             string query = @"
-                            update CoachsTrainging set
-                            coachID = @coachID
-                           ,sportID=@sportID
-                          ,isAvaliable =@isAvaliable,
-                        ,dayilyStartAt=@dayilyStartAt,
-                        dayilyEndAt = @dayilyEndAt,
-                        trainingDay = @trainingDay,
-                       fee = @fee where CoachsTraingingID = @id";
+                            update CoachesTrainging set
+                            coacheID = @coachID,
+                            sportID=@sportID,
+                            isAvaliable =@isAvaliable,
+                            dayilyStartAt=@dayilyStartAt,
+                            dayilyEndAt = @dayilyEndAt,
+                            trainingDay = @trainingDay,
+                            fee = @fee
+                            where CoachsTraingingID = @id";
             try
             {
 
@@ -231,7 +238,7 @@ namespace sportDataLayer
             )
         {
             bool isUpdate = false;
-            string query = @"update CoachsTrainging set isAvaliable =@isAvaliable where CoachsTraingingID = @id";
+            string query = @"update CoachesTrainging set isAvaliable =@isAvaliable where CoachsTraingingID = @id";
             try
             {
 
@@ -268,7 +275,7 @@ namespace sportDataLayer
                              )
         {
             bool isDelete = false;
-            string query = @"delete from CoachsTrainging where CoachsTraingingID = @id";
+            string query = @"delete from CoachesTrainging where CoachsTraingingID = @id";
             try
             {
 
@@ -308,7 +315,7 @@ namespace sportDataLayer
                 using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
-                    string query = @"select * from CoachesTraing";
+                    string query = @"select * from CoachesTraingView";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
 
@@ -336,7 +343,7 @@ namespace sportDataLayer
                 using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
-                    string query = @"select * from CoachesTraing where CoachsTraingingID = @id";
+                    string query = @"select * from CoachesTraingView where CoachsTraingingID = @id";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.Add("@id", id);
@@ -361,7 +368,7 @@ namespace sportDataLayer
         public static bool isCoachTrainingByCoach(int coachID)
         {
             bool isFound = false;
-            string query = @"select  found=1 CoachsTrainging where coachID = @coachID ";
+            string query = @"select  found=1 CoachesTrainging where coachID = @coachID ";
             try
             {
 
@@ -398,7 +405,7 @@ namespace sportDataLayer
         public static bool isCoachTrainingActive(int id)
         {
             bool isActive = false;
-            string query = @"select found=1 CoachsTrainging where CoachsTraingingID = @id and isAvaliable =1 ";
+            string query = @"select found=1 from CoachesTrainging where CoachsTraingingID = @id and isAvaliable =1 ";
             try
             {
 

@@ -21,7 +21,7 @@ namespace SportCllubeBuisness
         public string phone { get; set; }
         public string fullName
         {
-            get { return firstName + " " + secondName + " " + thirdName + " " + " " + familyName; }
+            get { return this.firstName + " " + this.secondName + " " + this.thirdName + " " + this.familyName; }
         }
 
         public clsPeopleBuisness()

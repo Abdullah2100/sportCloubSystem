@@ -42,6 +42,8 @@ namespace SportCllubeBuisness
             base.nationalityID = personInfo.nationalityID;
             base.address = personInfo.address;
             base.phone = personInfo.phone;
+
+
             this.mode = mode;
             this.id = id;
             this.personID = personID;
@@ -67,6 +69,41 @@ namespace SportCllubeBuisness
 
             return null;
         }
+
+        public clsCoachBuisness findCoachByFullName(string fullname)
+        {
+            clsPeopleBuisness _person = clsPeopleBuisness.findPeoplebyFullName(fullname);
+            if (_person == null)
+            {
+                return null;
+            }
+
+            base.mode = _person.mode;
+            base.id = _person.id;
+            base.firstName = _person.firstName;
+            base.secondName = _person.secondName;
+            base.thirdName = _person.thirdName;
+            base.familyName = _person.familyName;
+            base.brithday = _person.brithday;
+            base.gender = _person.gender;
+            base.nationalityID = _person.nationalityID;
+            base.address = _person.address;
+            base.phone = _person.phone;
+
+            int id = 0;
+            int personID = base.id;
+            DateTime startTraingDate = DateTime.Now;
+            DateTime? endTraingDate = null;
+            bool isActive = false;
+
+            if (clsCoachData.findCoachByPersonID(ref id, personID, ref startTraingDate, ref endTraingDate, ref isActive))
+            {
+                return new clsCoachBuisness(enMode.update, id, personID, startTraingDate, endTraingDate, isActive); ;
+            }
+
+            return null;
+        }
+
 
 
         public static clsCoachBuisness findCoachByPersonID(int personID)
@@ -134,6 +171,11 @@ namespace SportCllubeBuisness
         public static DataTable getAllCoachs()
         {
             return clsCoachData.getAllCoaches();
+        }
+
+        public static DataTable getAllActiveCoachsName()
+        {
+            return clsCoachData.getAllActiveCoachsName();
         }
 
         public static bool deleteMemberByID(int id)

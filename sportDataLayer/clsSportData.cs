@@ -67,7 +67,7 @@ namespace sportDataLayer
                             if (reader.Read())
                             {
                                 isFound = true;
-                                id = (int)reader["sportID "];
+                                id = (int)reader["sportID"];
                                 createdDate = (DateTime)reader["createdDate "];
                                 isActive = (bool)reader["isActive"];
 
@@ -224,6 +224,39 @@ namespace sportDataLayer
                 {
                     con.Open();
                     string query = @"select * FROM Sports ";
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+
+                    {
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+
+                        {
+                            if (reader.HasRows)
+                            {
+                                dtSportList.Load(reader);
+                            }
+                        }
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error is :" + ex.Message);
+            }
+            return dtSportList;
+        }
+
+
+
+        public static DataTable getAllActiveSportName()
+        {
+            DataTable dtSportList = new DataTable();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(connectionUrl))
+                {
+                    con.Open();
+                    string query = @"select name FROM Sports  where isActive = 1";
                     using (SqlCommand cmd = new SqlCommand(query, con))
 
                     {

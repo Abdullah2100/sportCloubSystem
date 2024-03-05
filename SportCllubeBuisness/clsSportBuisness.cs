@@ -96,6 +96,11 @@ namespace SportCllubeBuisness
             return clsSportData.getAllSport();
         }
 
+        public static DataTable getAllActiveSportName()
+        {
+            return clsSportData.getAllActiveSportName();
+        }
+
         public static bool isSportExistByName(string name)
         {
             return clsSportData.isExistByName(name);

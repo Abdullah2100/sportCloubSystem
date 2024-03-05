@@ -294,6 +294,40 @@ namespace sportDataLayer
 
         }
 
+        public static DataTable getAllActiveCoachsName()
+        {
+            DataTable dtPoepleList = new DataTable();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(connectionUrl))
+                {
+                    con.Open();
+                    string query = @" select (p.fristName+' '+p.secondName+' '+p.thirdName+' '+ p.familyName ) as fullName
+                                      from Peoples p inner join Nationalitys n on p.nationalityID = n.nationalityID
+                                      inner join Coaches c on c.personID = p.personID  where isActive =1 ";
+
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                                dtPoepleList.Load(reader);
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                clsAppEventHandler.createNewEventLog(ex.Message);
+
+                Console.WriteLine("Error is :" + ex.Message);
+            }
+            return dtPoepleList;
+
+        }
+
+
 
         public static bool UpdateCoachState(
 

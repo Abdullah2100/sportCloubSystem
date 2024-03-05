@@ -1,17 +1,18 @@
-﻿using System.Diagnostics;
+﻿using System.Configuration;
+
+using System.Diagnostics;
 
 namespace sportDataLayer
 {
     public class clsAppEventHandler
     {
-        private static string _appName { get { return "SportCloupApp"; } }
 
-
+        static string appEventName = ConfigurationManager.AppSettings["appEventName"];
         private static void _createLogIfItNoteCreated()
         {
-            if (!EventLog.Exists(_appName))
+            if (!EventLog.Exists(appEventName))
             {
-                EventLog.CreateEventSource(_appName, "Application");
+                EventLog.CreateEventSource(appEventName, "Application");
             }
 
         }
@@ -21,7 +22,7 @@ namespace sportDataLayer
         public static void createNewEventLog(string error)
         {
             _createLogIfItNoteCreated();
-            EventLog.WriteEntry(_appName, error);
+            EventLog.WriteEntry(appEventName, error);
         }
     }
 }

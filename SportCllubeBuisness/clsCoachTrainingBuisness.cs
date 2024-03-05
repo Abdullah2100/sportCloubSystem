@@ -3,7 +3,7 @@ using System.Data;
 
 namespace SportCllubeBuisness
 {
-    public class clsCoachTrainingBuisness : clsPeopleBuisness
+    public class clsCoachTrainingBuisness
     {
         public enum enMode { add, update };
         public enMode mode { get; set; }
@@ -14,11 +14,10 @@ namespace SportCllubeBuisness
         public string dayilyStartAt { get; set; }
         public string dayilyEndAt { get; set; }
         public bool isAvaliable { get; set; }
-        public double fee { get; set; }
+        public decimal fee { get; set; }
+        public clsCoachBuisness coatchInfo { get; set; }
+        public clsSportBuisness sprotInfo { get; set; }
 
-        public clsSportBuisness sportInfo { get; set; }
-
-        public clsCoachBuisness coachInfo { get; set; }
 
         public clsCoachTrainingBuisness()
         {
@@ -35,7 +34,7 @@ namespace SportCllubeBuisness
 
         }
 
-        private clsCoachTrainingBuisness(enMode mode, int id, int coachID, int sportID, int trainingDay, string dayilyStartAt, string dayilyEndAt, bool isAvaliable, double fee)
+        private clsCoachTrainingBuisness(enMode mode, int id, int coachID, int sportID, int trainingDay, string dayilyStartAt, string dayilyEndAt, bool isAvaliable, decimal fee)
         {
             this.mode = mode;
             this.id = id;
@@ -46,8 +45,8 @@ namespace SportCllubeBuisness
             this.dayilyEndAt = dayilyEndAt;
             this.isAvaliable = isAvaliable;
             this.fee = fee;
-            this.sportInfo = clsSportBuisness.findSport(sportID);
-            this.coachInfo = clsCoachBuisness.findCoachByID(coachID);
+            this.sprotInfo = clsSportBuisness.findSport(sportID);
+            this.coatchInfo = clsCoachBuisness.findCoachByID(coachID);
         }
 
         public static clsCoachTrainingBuisness findCoachTrainingByID(int id)
@@ -59,7 +58,7 @@ namespace SportCllubeBuisness
             string dayilyStartAt = "";
             string dayilyEndAt = "";
             int trainingDay = 0;
-            double fee = 0;
+            decimal fee = 0;
 
             if (clsCoachsTraingingData.findCoachsTrainging(id, ref coachID, ref sportID, ref isAvaliable, ref dayilyStartAt, ref dayilyEndAt, ref trainingDay, ref fee))
             {
@@ -79,7 +78,7 @@ namespace SportCllubeBuisness
             string dayilyStartAt = "";
             string dayilyEndAt = "";
             int trainingDay = 0;
-            double fee = 0;
+            decimal fee = 0;
 
             if (clsCoachsTraingingData.findCoachsTrainging(ref id, coachID, ref sportID, ref isAvaliable, ref dayilyStartAt, ref dayilyEndAt, ref trainingDay, ref fee))
             {
@@ -118,9 +117,8 @@ namespace SportCllubeBuisness
         }
 
 
-        public virtual bool save()
+        public bool save()
         {
-
 
 
             switch (mode)
@@ -149,6 +147,7 @@ namespace SportCllubeBuisness
             return clsCoachsTraingingData.getAllcoachTraining();
         }
 
+
         public static DataTable getCoachTrainginByID(int id)
         {
             return clsCoachsTraingingData.getAllcoachTraining(id);
@@ -171,7 +170,7 @@ namespace SportCllubeBuisness
         }
         public static bool deActivateCoachTraining(int id)
         {
-            return clsCoachsTraingingData.changeCoachTraingingState(id, true);
+            return clsCoachsTraingingData.changeCoachTraingingState(id, false);
         }
 
         public static bool isCoachTrainingActive(int id)

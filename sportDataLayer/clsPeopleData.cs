@@ -80,7 +80,7 @@ namespace sportDataLayer
                 using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
-                    string query = @"select * from Peoples p  where (p.fristName + ' '+p.secondName + ' ' + p.thirdName + ' ' + p.familyName) =@fullName  ";
+                    string query = @"select * from Peoples p  where (p.fristName + ' '+p.secondName + ' ' + p.thirdName + ' ' + p.familyName) = @fullName  ";
 
 
                     using (SqlCommand cmd = new SqlCommand(query, con))
@@ -91,7 +91,7 @@ namespace sportDataLayer
                             if (reader.Read())
                             {
                                 isFound = true;
-                                id = (int)reader["coacheID"];
+                                id = (int)reader["personID"];
                                 fristName = (string)reader["fristName"];
                                 secondName = (string)reader["secondName"];
                                 thirdName = (string)reader["thirdName"];
