@@ -78,7 +78,7 @@ namespace sportDataLayer
 
         {
             bool isFound = false;
-            string query = @"select * from CoachesTrainging where coacheID = @icoacheIDd";
+            string query = @"select * from CoachesTrainging where coacheID = @coacheID";
 
             try
             {
@@ -305,7 +305,7 @@ namespace sportDataLayer
         }
 
 
-        public static DataTable getAllcoachTraining()
+        public static DataTable getAllCoachTraining()
         {
             bool isDelete = false;
             DataTable dtCaochesTraingin = new DataTable();
@@ -362,6 +362,33 @@ namespace sportDataLayer
 
             return dtCaochesTraingin;
         }
+
+        public static DataTable getAllcoachTrainingName()
+        {
+            DataTable dtCaochesTraingin = new DataTable();
+            try
+            {
+
+                using (SqlConnection con = new SqlConnection(connectionUrl))
+                {
+                    con.Open();
+                    string query = @"select  sportName + ' ' + fullName from CoachesTraingView";
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        dtCaochesTraingin.Load(cmd.ExecuteReader());
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                clsAppEventHandler.createNewEventLog(ex.Message);
+                Console.WriteLine("errror is : " + ex.Message);
+            }
+
+            return dtCaochesTraingin;
+        }
+
 
 
 

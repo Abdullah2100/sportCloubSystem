@@ -174,6 +174,65 @@ namespace sportDataLayer
 
 
 
+        public static bool findPeopleByFullName(
+
+            string fullName,
+        ref int id,
+        ref string fristName,
+        ref string secondName,
+        ref string thirdName,
+        ref string familyName,
+        ref DateTime brithday,
+        ref bool gender,
+        ref int nationalityID,
+        ref string address,
+        ref string phone)
+        {
+            bool isFound = false;
+            try
+            {
+                using (SqlConnection con = new SqlConnection(connectionUrl))
+                {
+                    con.Open();
+                    string query = @"select * from Peoples where fristName + ' ' + secondName + ' '+ thirdName + ' ' + familyName = @fullName";
+
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        cmd.Parameters.AddWithValue("@fullName", fullName);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                isFound = true;
+                                id = (int)reader["personID"];
+                                fristName = (string)reader["firstName"];
+                                secondName = (string)reader["secondName"];
+                                thirdName = (string)reader["thirdname"];
+                                familyName = (string)reader["familyName"];
+                                brithday = (DateTime)reader["brithDay"];
+                                gender = (bool)reader["gender"];
+                                nationalityID = (int)reader["nationalityID"];
+                                address = (string)reader["address"];
+                                phone = (string)reader["phone"];
+                            }
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error is :" + ex.Message);
+            }
+            return isFound;
+
+        }
+
+
+
+
+
         public static int createPeoples(
           int id,
           string firstName,

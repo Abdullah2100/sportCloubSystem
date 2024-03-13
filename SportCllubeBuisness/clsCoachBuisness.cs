@@ -4,7 +4,7 @@ using System.Data;
 
 namespace SportCllubeBuisness
 {
-    public class clsCoachBuisness : clsPeopleBuisness
+    public class clsCoachBuisness
     {
         public enum enMode { add, update };
         public enMode mode { get; set; }
@@ -14,6 +14,12 @@ namespace SportCllubeBuisness
         public DateTime? endTraingDate { get; set; }
         public bool isActive { get; set; }
 
+        public clsPeopleBuisness personInfo;
+
+        public string fullName
+        {
+            get { return personInfo.fullName; }
+        }
 
 
         public clsCoachBuisness()
@@ -30,19 +36,6 @@ namespace SportCllubeBuisness
 
         private clsCoachBuisness(enMode mode, int id, int personID, DateTime startTraingDate, DateTime? endTraingDate, bool isActive)
         {
-            clsPeopleBuisness personInfo = clsPeopleBuisness.findPeopleByID(personID);
-            base.mode = personInfo.mode;
-            base.id = personInfo.id;
-            base.firstName = personInfo.firstName;
-            base.secondName = personInfo.secondName;
-            base.thirdName = personInfo.thirdName;
-            base.familyName = personInfo.familyName;
-            base.brithday = personInfo.brithday;
-            base.gender = personInfo.gender;
-            base.nationalityID = personInfo.nationalityID;
-            base.address = personInfo.address;
-            base.phone = personInfo.phone;
-
 
             this.mode = mode;
             this.id = id;
@@ -50,6 +43,7 @@ namespace SportCllubeBuisness
             this.startTraingDate = startTraingDate;
             this.endTraingDate = endTraingDate;
             this.isActive = isActive;
+            this.personInfo = clsPeopleBuisness.findPeopleByID(personID);
 
         }
 
@@ -70,28 +64,17 @@ namespace SportCllubeBuisness
             return null;
         }
 
-        public clsCoachBuisness findCoachByFullName(string fullname)
+        public static clsCoachBuisness findCoachByFullName(string fullname)
         {
-            clsPeopleBuisness _person = clsPeopleBuisness.findPeoplebyFullName(fullname);
+            clsPeopleBuisness _person = clsPeopleBuisness.findPeopleByFullName(fullname);
             if (_person == null)
             {
                 return null;
             }
 
-            base.mode = _person.mode;
-            base.id = _person.id;
-            base.firstName = _person.firstName;
-            base.secondName = _person.secondName;
-            base.thirdName = _person.thirdName;
-            base.familyName = _person.familyName;
-            base.brithday = _person.brithday;
-            base.gender = _person.gender;
-            base.nationalityID = _person.nationalityID;
-            base.address = _person.address;
-            base.phone = _person.phone;
 
+            int personID = _person.id;
             int id = 0;
-            int personID = base.id;
             DateTime startTraingDate = DateTime.Now;
             DateTime? endTraingDate = null;
             bool isActive = false;

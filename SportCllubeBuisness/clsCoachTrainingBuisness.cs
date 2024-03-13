@@ -144,7 +144,7 @@ namespace SportCllubeBuisness
 
         public static DataTable getAllCoachsTraingin()
         {
-            return clsCoachsTraingingData.getAllcoachTraining();
+            return clsCoachsTraingingData.getAllCoachTraining();
         }
 
 
@@ -152,6 +152,12 @@ namespace SportCllubeBuisness
         {
             return clsCoachsTraingingData.getAllcoachTraining(id);
         }
+
+        public static DataTable getCoachTrainingName()
+        {
+            return clsCoachsTraingingData.getAllcoachTrainingName();
+        }
+
 
         public static bool deleteCoachTrainginByID(int id)
         {

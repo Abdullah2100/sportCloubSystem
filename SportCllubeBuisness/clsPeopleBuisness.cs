@@ -114,6 +114,26 @@ namespace SportCllubeBuisness
             return null;
         }
 
+        public static clsPeopleBuisness findPeopleByFullName(string fullName)
+        {
+            string firstName = "";
+            string secondName = "";
+            string thirdName = "";
+            string familyName = "";
+            DateTime brithday = DateTime.Now;
+            bool gender = false;
+            int nationalityID = 0;
+            string address = "";
+            string phone = "";
+            int id = 0;
+            if (clsPeoplesData.findPeopleByFullName(fullName, ref id, ref firstName, ref secondName, ref thirdName, ref familyName, ref brithday, ref gender, ref nationalityID, ref address, ref phone))
+            {
+
+                return new clsPeopleBuisness(enMode.update, id, firstName, secondName, thirdName, familyName, brithday, gender, nationalityID, address, phone);
+            }
+            return null;
+        }
+
         private bool _add()
         {
             this.id = clsPeoplesData.createPeoples(

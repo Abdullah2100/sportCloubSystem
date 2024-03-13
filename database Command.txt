@@ -73,3 +73,11 @@ dayilyEndAt nvarchar(10) not null,
 trainingDay int null,
 fee money not null
 ) 
+
+create table MemberSubscriptions(
+memberSubscriptionID int identity(1,1) primary key,
+CoachsTraingingID int not null references CoachesTrainging,
+memberID int not null references Members,
+fee money not null,
+startDate datetime  default getDate(),
+endDate datetime null)

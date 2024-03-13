@@ -28,6 +28,7 @@ namespace SportCllubeBuisness
             this.id = id;
             this.personID = personID;
             this.isActive = isActive;
+            personInfo = clsPeopleBuisness.findPeopleByID(personID);
         }
 
 
