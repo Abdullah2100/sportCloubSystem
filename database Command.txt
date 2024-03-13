@@ -81,3 +81,25 @@ memberID int not null references Members,
 fee money not null,
 startDate datetime  default getDate(),
 endDate datetime null)
+
+SELECT ct.CoachsTraingingID, p.fristName + ' ' + p.secondName + ' ' + p.thirdName + ' ' + p.familyName AS fullName, ct.isAvaliable, s.name AS sportName, ct.dayilyStartAt AS startAt, ct.dayilyEndAt AS endAt, CAST(ct.fee AS nvarchar) AS cost
+FROM     dbo.CoachesTrainging AS ct INNER JOIN
+                  dbo.Coaches AS c ON ct.coacheID = c.coacheID INNER JOIN
+                  dbo.Peoples AS p ON p.personID = c.personID INNER JOIN
+                  dbo.Sports AS s ON ct.sportID = s.sportID
+WHERE  (c.isActive = 1)
+
+
+SELECT ms.memberSubscriptionID AS subscriptionID, s.name AS sportName,
+                      (SELECT fristName + ' ' + secondName + ' ' + thirdName + ' ' + familyName AS Expr1
+                       FROM      dbo.Peoples
+                       WHERE   (personID = c.personID)) AS coatchName,
+                      (SELECT fristName + ' ' + secondName + ' ' + thirdName + ' ' + familyName AS Expr1
+                       FROM      dbo.Peoples AS Peoples_1
+                       WHERE   (personID = m.personID)) AS memberName, ms.startDate, ms.endDate, c.coacheID, m.memberID
+FROM     dbo.MemberSubscriptions AS ms INNER JOIN
+                  dbo.CoachesTrainging AS ct ON ms.CoachsTraingingID = ct.CoachsTraingingID INNER JOIN
+                  dbo.Coaches AS c ON c.coacheID = ct.coacheID INNER JOIN
+                  dbo.Sports AS s ON s.sportID = ct.sportID INNER JOIN
+                  dbo.Members AS m ON m.memberID = ms.memberID INNER JOIN
+                  dbo.Peoples AS p ON m.personID = p.personID
