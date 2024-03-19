@@ -5,17 +5,19 @@ using System.Data.SqlClient;
 
 namespace sportDataLayer
 {
-    public class clsCoachData
+    public class clsEmployeeData
     {
         static string connectionUrl = ConfigurationManager.ConnectionStrings["conncetionUrl"].ConnectionString;
 
-        public static bool findCoachByID
+        public static bool findEmployeeByID
             (
             int id,
             ref int personID,
-            ref DateTime startTraingDate,
-            ref DateTime? endTraingDate,
-            ref bool isActive)
+            ref string userName,
+            ref string password,
+            ref DateTime createDate,
+            ref bool isActive
+            )
         {
             bool isFound = false;
             try
@@ -27,7 +29,7 @@ namespace sportDataLayer
 
 
                     con.Open();
-                    string query = @"select * from Coaches where coacheID = @id";
+                    string query = @"select * from Employee where employeeID = @id";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@id", id);
@@ -37,11 +39,9 @@ namespace sportDataLayer
                             {
                                 isFound = true;
                                 personID = (int)reader["personID"];
-                                startTraingDate = (DateTime)reader["startTraingDate"];
-                                if (reader["endTraingDate"] == DBNull.Value)
-                                    endTraingDate = null;
-                                else
-                                    endTraingDate = (DateTime)reader["endTraingDate"];
+                                createDate = (DateTime)reader["createdDate"];
+                                userName = (string)reader["userName"];
+                                password = (string)reader["password"];
                                 isActive = (bool)reader["isActive"];
                             }
                         }
@@ -62,13 +62,15 @@ namespace sportDataLayer
         }
 
 
-        public static bool findCoachByPersonID
-        (
+        public static bool findEmpoyeeByUserPersonID
+            (
             ref int id,
-            int personID,
-            ref DateTime startTraingDate,
-            ref DateTime? endTraingDate,
-            ref bool isActive)
+             int personID,
+            ref string userName,
+            ref string password,
+            ref DateTime createdDate,
+            ref bool isActive
+            )
         {
             bool isFound = false;
             try
@@ -80,7 +82,7 @@ namespace sportDataLayer
 
 
                     con.Open();
-                    string query = @"select * from Coaches where personID = @personID";
+                    string query = @"select * from Employee where personID = @personID";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@personID", personID);
@@ -89,12 +91,10 @@ namespace sportDataLayer
                             if (reader.Read())
                             {
                                 isFound = true;
-                                id = (int)reader["coacheID"];
-                                startTraingDate = (DateTime)reader["startTraingDate"];
-                                if (reader["endTraingDate"] == DBNull.Value)
-                                    endTraingDate = null;
-                                else
-                                    endTraingDate = (DateTime)reader["endTraingDate"];
+                                userName = (string)reader["userName"];
+                                createdDate = (DateTime)reader["createdDate"];
+                                id = (int)reader["employeeID"];
+                                password = (string)reader["password"];
                                 isActive = (bool)reader["isActive"];
                             }
                         }
@@ -116,12 +116,68 @@ namespace sportDataLayer
         }
 
 
-        public static int createCoach
-           (
-               int personID,
-                DateTime startTraingDate,
-                DateTime? endTraingDate,
-                bool isActive)
+        public static bool findEmpoyeeByUserNameAndPassword
+            (
+            ref int id,
+            ref int personID,
+            string userName,
+            string password,
+            ref DateTime createdDate,
+            ref bool isActive
+            )
+        {
+            bool isFound = false;
+            try
+            {
+
+
+                using (SqlConnection con = new SqlConnection(connectionUrl))
+                {
+
+
+                    con.Open();
+                    string query = @"select * from Employee where userName = @userName and password = @password";
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        cmd.Parameters.AddWithValue("@userName", userName);
+                        cmd.Parameters.AddWithValue("@password", password);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                isFound = true;
+                                personID = (int)reader["personID"];
+                                createdDate = (DateTime)reader["createdDate"];
+                                id = (int)reader["employeeID"];
+                                isActive = (bool)reader["isActive"];
+                            }
+                        }
+
+                    }
+
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                clsAppEventHandler.createNewEventLog(ex.Message);
+
+                Console.WriteLine("Error is : " + ex.Message);
+            }
+            return isFound;
+
+        }
+
+
+
+        public static int createEmployee
+            (
+            int personID,
+            string userName,
+            string password,
+            bool isActive
+            )
         {
             int id = 0;
             try
@@ -134,13 +190,14 @@ namespace sportDataLayer
 
                     con.Open();
                     string query = @"
-                                  INSERT INTO Coaches (personID,startTraingDate,isActive)
-                                  VALUES(@personID,@startTraingDate,@isActive);
+                                  INSERT INTO Employee (personID,userName,password,isActive)
+                                  VALUES(@personID,@userName,@password,@isActive);
                                   select SCOPE_IDENTITY();";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@personID", personID);
-                        cmd.Parameters.AddWithValue("@startTraingDate", personID);
+                        cmd.Parameters.AddWithValue("@userName", userName);
+                        cmd.Parameters.AddWithValue("@password", password);
                         cmd.Parameters.AddWithValue("@isActive", personID);
                         object result = cmd.ExecuteScalar();
                         if (result != null && int.TryParse(result.ToString(), out int cachID))
@@ -165,13 +222,14 @@ namespace sportDataLayer
         }
 
 
-        public static bool updateCoach
-                (
-                    int id,
-                    int personID,
-                     DateTime startTraingDate,
-                     DateTime? endTraingDate,
-                     bool isActive)
+        public static bool updateEmployee
+            (
+            int id,
+            int personID,
+            string userName,
+            string password,
+            bool isActive
+            )
         {
             bool isUpdated = false;
             try
@@ -184,17 +242,19 @@ namespace sportDataLayer
 
                     con.Open();
                     string query = @"
-                                  Update Coaches set personID = @personID
-                                  ,startTraingDate = @startTraingDate,
+                                  Update Employee set personID = @personID
+                                  ,userName = @userName,
+                                   password = @password,
                                    isActive =@isActive
-                                   where coacheID = @id;
+                                   where employeeID = @id;
                                    ";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@id", id);
                         cmd.Parameters.AddWithValue("@personID", personID);
-                        cmd.Parameters.AddWithValue("@startTraingDate", personID);
-                        cmd.Parameters.AddWithValue("@isActive", personID);
+                        cmd.Parameters.AddWithValue("@userName", userName);
+                        cmd.Parameters.AddWithValue("@password", password);
+                        cmd.Parameters.AddWithValue("@isActive", isActive);
                         int result = cmd.ExecuteNonQuery();
                         if (result > 0)
                         {
@@ -218,10 +278,9 @@ namespace sportDataLayer
         }
 
 
-
-        public static bool deleteCoach(int id)
+        public static bool deleteEmployee(int id)
         {
-            bool isUpdated = false;
+            bool isDelete = false;
             try
             {
 
@@ -231,8 +290,7 @@ namespace sportDataLayer
 
 
                     con.Open();
-                    string query = @"delete from Coaches where coacheID == @id;
-                                   ";
+                    string query = @"delete from Employee where employeeID = @id";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@id", id);
@@ -240,7 +298,7 @@ namespace sportDataLayer
                         int result = cmd.ExecuteNonQuery();
                         if (result > 0)
                         {
-                            isUpdated = true;
+                            isDelete = true;
                         }
 
                     }
@@ -253,11 +311,13 @@ namespace sportDataLayer
             {
                 Console.WriteLine("Error is : " + ex.Message);
             }
-            return isUpdated;
+            return isDelete;
 
         }
 
-        public static DataTable getAllCoaches()
+        public static DataTable getAllEmployee()
+
+
         {
             DataTable dtPoepleList = new DataTable();
             try
@@ -265,40 +325,7 @@ namespace sportDataLayer
                 using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
-                    string query = @"select * from Coaches_view";
-
-                    using (SqlCommand cmd = new SqlCommand(query, con))
-                    {
-                        using (SqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            if (reader.HasRows)
-                                dtPoepleList.Load(reader);
-                        }
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                clsAppEventHandler.createNewEventLog(ex.Message);
-
-                Console.WriteLine("Error is :" + ex.Message);
-            }
-            return dtPoepleList;
-
-        }
-
-        public static DataTable getAllActiveCoachsName()
-        {
-            DataTable dtPoepleList = new DataTable();
-            try
-            {
-                using (SqlConnection con = new SqlConnection(connectionUrl))
-                {
-                    con.Open();
-                    string query = @" select (p.fristName+' '+p.secondName+' '+p.thirdName+' '+ p.familyName ) as fullName
-                                      from Peoples p inner join Nationalitys n on p.nationalityID = n.nationalityID
-                                      inner join Coaches c on c.personID = p.personID  where isActive =1 ";
+                    string query = @"select * from Employee_view";
 
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
@@ -322,12 +349,7 @@ namespace sportDataLayer
         }
 
 
-
-        public static bool UpdateCoachState(
-
-        int id,
-         bool isActive
-        )
+        public static bool UpdateEmployeeState(int id, bool isActive)
         {
             bool isAdd = false;
             try
@@ -335,9 +357,9 @@ namespace sportDataLayer
                 using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
-                    string query = @"update Coaches set
+                    string query = @"update Employee set
                                      isActive = @isActive
-                                     where coacheID = @id
+                                     where employeeID = @id
 ";
 
                     using (SqlCommand cmd = new SqlCommand(query, con))
@@ -364,11 +386,9 @@ namespace sportDataLayer
         }
 
 
-
-
-        public static bool isCoachActive(int id)
+        public static bool isEmployeeActive(int id)
         {
-            bool isUpdated = false;
+            bool isActive = false;
             try
             {
 
@@ -378,25 +398,21 @@ namespace sportDataLayer
 
 
                     con.Open();
-                    string query = @"select found =1 from Coaches where coacheID = @id and isActive =1 ";
+                    string query = @"select found =1 from Employee where employeeID = @id and isActive =1 ";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@id", id);
 
-                        using (SqlDataReader reader = cmd.ExecuteReader())
-                        {
+                        Object result = cmd.ExecuteScalar();
 
-                            if (reader.Read())
-                            {
-                                isUpdated = true;
-                            }
-                        }
+                        if (result != null)
+                            isActive = true;
+
+
 
                     }
 
-
                 }
-
             }
             catch (Exception ex)
             {
@@ -404,14 +420,13 @@ namespace sportDataLayer
 
                 Console.WriteLine("Error is : " + ex.Message);
             }
-            return isUpdated;
+            return isActive;
 
         }
 
-
-        public static bool isCoachExistByID(int id)
+        public static bool isEmployeeExistByID(int id)
         {
-            bool isUpdated = false;
+            bool isExist = false;
             try
             {
 
@@ -421,38 +436,35 @@ namespace sportDataLayer
 
 
                     con.Open();
-                    string query = @"select found =1 from Coaches where coacheID = @id ";
+                    string query = @"select found =1 from Employee where employeeID = @id ";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@id", id);
 
-                        using (SqlDataReader reader = cmd.ExecuteReader())
-                        {
+                        Object result = cmd.ExecuteScalar();
 
-                            if (reader.Read())
-                            {
-                                isUpdated = true;
-                            }
-                        }
+                        isExist = (bool)result ? true : false;
+
+
 
                     }
 
-
                 }
-
             }
             catch (Exception ex)
             {
+                clsAppEventHandler.createNewEventLog(ex.Message);
+
                 Console.WriteLine("Error is : " + ex.Message);
             }
-            return isUpdated;
+            return isExist;
+
 
         }
 
-
-        public static bool isCoachExistByPersonID(int personID)
+        public static bool isEmployeeExistByPersonID(int personID)
         {
-            bool isUpdated = false;
+            bool isExist = false;
             try
             {
 
@@ -462,25 +474,21 @@ namespace sportDataLayer
 
 
                     con.Open();
-                    string query = @"select found =1 from Coaches where personID = @personID ";
+                    string query = @"select found =1 from Employee where personID = @personID ";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@personID", personID);
 
-                        using (SqlDataReader reader = cmd.ExecuteReader())
-                        {
+                        Object result = cmd.ExecuteScalar();
 
-                            if (reader.Read())
-                            {
-                                isUpdated = true;
-                            }
-                        }
+                        if (result != null)
+                            isExist = true;
+
+
 
                     }
 
-
                 }
-
             }
             catch (Exception ex)
             {
@@ -488,7 +496,42 @@ namespace sportDataLayer
 
                 Console.WriteLine("Error is : " + ex.Message);
             }
-            return isUpdated;
+            return isExist;
+
+
+        }
+
+        public static bool isEmployeeExistByUserNameD(string userName)
+        {
+            bool isExist = false;
+            try
+            {
+
+
+                using (SqlConnection con = new SqlConnection(connectionUrl))
+                {
+
+
+                    con.Open();
+                    string query = @"select found =1 from Employee where userName = @userName ";
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        cmd.Parameters.AddWithValue("@userName", userName);
+                        Object result = cmd.ExecuteScalar();
+                        if (result != null)
+                            isExist = true;
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                clsAppEventHandler.createNewEventLog(ex.Message);
+
+                Console.WriteLine("Error is : " + ex.Message);
+            }
+            return isExist;
+
 
         }
 

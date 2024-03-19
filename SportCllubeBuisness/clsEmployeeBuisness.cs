@@ -1,0 +1,185 @@
+﻿using sportDataLayer;
+using System;
+using System.Data;
+
+namespace SportCllubeBuisness
+{
+    public class clsEmployeeBuisness
+    {
+        enum enMode { add, update }
+        enMode mode { get; set; }
+        public int id { get; set; }
+        public int personID { get; set; }
+        public DateTime createDate { get; set; }
+        public string userName { get; set; }
+        public string password { get; set; }
+        public bool isActive { get; set; }
+        public clsPeopleBuisness personInfo { get; set; }
+
+        public clsEmployeeBuisness()
+        {
+            id = 0;
+            personID = 0;
+            createDate = DateTime.Now;
+            userName = "";
+            password = "";
+            isActive = true;
+            personInfo = null;
+            mode = enMode.add;
+        }
+
+        private clsEmployeeBuisness(enMode mode, int id, int personID, string userName, string password, DateTime createDate, bool isActive)
+        {
+            this.id = id;
+            this.personID = personID;
+            this.userName = userName;
+            this.password = password;
+            this.createDate = createDate;
+            this.isActive = isActive;
+            this.mode = mode;
+            personInfo = clsPeopleBuisness.findPeopleByID(personID);
+
+        }
+
+        private bool _add()
+        {
+
+            this.id = clsEmployeeData.createEmployee(
+                personID,
+                userName,
+                password,
+                isActive
+                );
+            return (this.id != 0);
+        }
+
+        private bool _update()
+        {
+
+            return clsEmployeeData.updateEmployee(
+                 id,
+                 personID,
+                 userName,
+                 password,
+                 isActive
+                 );
+        }
+
+        public bool save()
+        {
+
+
+            switch (mode)
+            {
+                case enMode.add:
+                    {
+                        if (_add())
+                        {
+                            return true;
+                        }
+                        return false;
+                    }
+                case enMode.update:
+                    {
+                        if (_update())
+                            return true;
+                        return false;
+                    }
+            }
+            return false;
+        }
+
+
+        public static clsEmployeeBuisness findEmployeeByID(int id)
+        {
+            int personID = 0;
+            DateTime createDate = DateTime.Now;
+            string userName = "";
+            string password = "";
+            bool isActive = false;
+
+            if (clsEmployeeData.findEmployeeByID(id, ref personID, ref userName, ref password, ref createDate, ref isActive))
+            {
+                return new clsEmployeeBuisness(enMode.update, id, personID, userName, password, createDate, isActive);
+            }
+            return null;
+
+        }
+
+        public static clsEmployeeBuisness findEmployeeByPersonID(int personID)
+        {
+            int id = 0;
+            DateTime createDate = DateTime.Now;
+            string userName = "";
+            string password = "";
+            bool isActive = false;
+
+            if (clsEmployeeData.findEmpoyeeByUserPersonID(ref id, personID, ref userName, ref password, ref createDate, ref isActive))
+            {
+                return new clsEmployeeBuisness(enMode.update, id, personID, userName, password, createDate, isActive);
+            }
+            return null;
+
+        }
+
+
+        public static clsEmployeeBuisness findEmployeeByUserNameAndPassword(string userName, string password)
+        {
+            int id = 0;
+            DateTime createDate = DateTime.Now;
+            int personID = 0;
+            bool isActive = false;
+
+            if (clsEmployeeData.findEmpoyeeByUserNameAndPassword(ref id, ref personID, userName, password, ref createDate, ref isActive))
+            {
+                return new clsEmployeeBuisness(enMode.update, id, personID, userName, password, createDate, isActive);
+            }
+            return null;
+
+        }
+
+
+        public static bool deleteEmployee(int id)
+        {
+            return clsEmployeeData.deleteEmployee(id);
+        }
+
+        public static bool isEmployeeActive(int id)
+        {
+            return clsEmployeeData.isEmployeeActive(id);
+        }
+
+
+
+        public static bool activateEmployee(int id)
+        {
+            return clsEmployeeData.UpdateEmployeeState(id, true);
+        }
+
+        public static bool deActivateEmployee(int id)
+        {
+            return clsEmployeeData.UpdateEmployeeState(id, false);
+        }
+
+        public static bool isEmployeeExistByPersonID(int personID)
+        {
+            return clsEmployeeData.isEmployeeExistByPersonID(personID);
+        }
+
+        public static bool isEmployeeExistByID(int ID)
+        {
+            return clsEmployeeData.isEmployeeExistByID(ID);
+        }
+
+        public static bool isEmployeeExistByUserName(string userName)
+        {
+            return clsEmployeeData.isEmployeeExistByUserNameD(userName);
+        }
+
+        public static DataTable getallEmployee()
+        {
+            return clsEmployeeData.getAllEmployee();
+        }
+
+    }
+}

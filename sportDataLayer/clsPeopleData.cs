@@ -388,9 +388,14 @@ namespace sportDataLayer
                 {
                     con.Open();
                     string query = @"select p.personID,(p.fristName+' '+p.secondName+' '+p.thirdName+' '+ p.familyName ) as fullName,
-                                     case when p.gender = 1 then 'Male' else 'Female' end as gender,p.brithday,n.name as nationality ,p.phone
-                                     from Peoples p inner join Nationalitys n on p.nationalityID = n.nationalityID";
-
+                                     case when p.gender = 1 then 'Male' else 'Female' end as gender,
+                                     CAST(DAY(p.brithday) AS nvarchar) + '-' + 
+                                     CAST(MONTH(p.brithday) AS nvarchar) + '-' + 
+                                     CAST(YEAR(p.brithday) AS nvarchar) + ' ' + 
+                                     CAST(FORMAT(p.brithday, 'hh:mm tt') AS nvarchar) AS brithday
+                                     ,n.name as nationality ,p.phone
+                                     from Peoples p 
+                                     inner join Nationalitys n on p.nationalityID = n.nationalityID";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         using (SqlDataReader reader = cmd.ExecuteReader())

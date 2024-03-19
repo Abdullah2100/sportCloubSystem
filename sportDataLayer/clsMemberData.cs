@@ -213,15 +213,7 @@ namespace sportDataLayer
                 using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
-                    string query = @"
-                                     select m.memberID ,p.personID,
-                                     (p.fristName+' '+p.secondName+' '+p.thirdName+' '+ p.familyName ) as fullName,
-                                     case when p.gender = 1 then 'Male' else 'Female' end as gender
-                                     ,p.brithday,n.name as nationality ,p.phone , m.isActive as isActive
-                                     from Peoples p inner join Nationalitys n on p.nationalityID = n.nationalityID
-									 inner join Members m 
-									 on m.personID = p.personID
-";
+                    string query = @"select * from member_view";
 
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {

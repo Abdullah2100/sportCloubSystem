@@ -45,6 +45,7 @@
     <Compile Include="clsAppEventHandler.cs" />
     <Compile Include="clsCoachData.cs" />
     <Compile Include="clsCoachsTraingingData.cs" />
+    <Compile Include="clsEmployeeData.cs" />
     <Compile Include="clsMemberSubscriptionsData.cs" />
     <Compile Include="clsMemberData.cs" />
     <Compile Include="clsNationalityData.cs" />

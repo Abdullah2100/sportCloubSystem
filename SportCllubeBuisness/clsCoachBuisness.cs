@@ -161,7 +161,7 @@ namespace SportCllubeBuisness
             return clsCoachData.getAllActiveCoachsName();
         }
 
-        public static bool deleteMemberByID(int id)
+        public static bool deleteCoach(int id)
         {
             return clsCoachData.deleteCoach(id);
         }
