@@ -35,7 +35,7 @@ When the app starts, it requires login functionality. You have to disable it in 
    
 3. run sql file on sql server 
 
-feel free to reate issues the [open issues](https://github.com/Abdullah2100/sportCloubSystem/issues) for a full list of proposed features (and known issues).
+feel free to reate issues on  [open issues](https://github.com/Abdullah2100/sportCloubSystem/issues) .
 
 
 
