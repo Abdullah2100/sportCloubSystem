@@ -9,7 +9,7 @@ namespace sportDataLayer
     {
         static string connectionUrl = ConfigurationManager.ConnectionStrings["conncetionUrl"].ConnectionString;
 
-        public static bool findNationalityByID(int id, ref int addBy, ref string name)
+        public static bool findNationalityByID(int id, ref string name)
         {
             bool isFound = false;
 
@@ -29,7 +29,6 @@ namespace sportDataLayer
                             {
                                 isFound = true;
                                 name = (string)reader["name"];
-                                addBy = (int)reader["addBy"];
                             }
                         }
                     }
@@ -43,7 +42,7 @@ namespace sportDataLayer
             return isFound;
         }
 
-        public static bool findNationalityByName(ref int id, ref int addBy, string name)
+        public static bool findNationalityByName(ref int id, string name)
         {
             bool isFound = false;
 
@@ -63,7 +62,6 @@ namespace sportDataLayer
                             {
                                 isFound = true;
                                 id = (int)reader["nationalityID"];
-                                addBy = (int)reader["addBy"];
                             }
                         }
                     }

@@ -3,36 +3,10 @@ go
 
 use ClubeSportDB
 
-create table Sports(
-sportID int identity(1,1) primary key,
-name nvarchar(50) not null,
-createdDate datetime default GETDATE(),
-isActive bit default 1,
-addBy  int references Employees(employeeID)
-)
-
-
-
 create table Nationalitys(
 nationalityID int primary key ,
 name nvarchar  (20),
-addBy  int references Employees(employeeID)
 )
-
-create table Peoples(
-personID int identity(1,1) primary key,
-fristName nvarchar(20) not null,
-secondName nvarchar(20) not null,
-thirdName nvarchar(20) not null,
-familyName nvarchar(20) not null,
-brithday datetime not null,
-gender bit not null,
-nationalityID int references Nationalitys(nationalityID) ,
-address nvarchar(200) not null,
-phone nvarchar(15) not null,
-addBy  int references Employees(employeeID)
-)
-
 
 create table Peoples(
 personID int identity(1,1) primary key,
@@ -45,8 +19,28 @@ gender bit not null,
 nationalityID int references Nationalitys(nationalityID),
 address nvarchar(200) not null,
 phone nvarchar(15) not null,
+)
+
+create table Employees(
+employeeID int identity(1,1) primary key,
+personID int not null references Peoples(personID),
+userName nvarchar(100) not null ,
+password nvarchar(max) not null,
+createdDate Datetime default getDate(),
+isActive bit not null default 0,
+addBy int references Employees(employeeID))
+
+
+create table Sports(
+sportID int identity(1,1) primary key,
+name nvarchar(50) not null,
+createdDate datetime default GETDATE(),
+isActive bit default 1,
 addBy  int references Employees(employeeID)
 )
+
+
+
 
 create table Members(
 memberID int identity(1,1) primary key,
@@ -69,6 +63,7 @@ addBy  int references Employees(employeeID)
 create table CoachesTraingings(
 CoachsTraingingID int identity(1,1)primary key,
 sportID int not null references Sports(sportID),
+coacheID int not null references Coaches(coacheID),
 isAvaliable bit default 1,
 dayilyStartAt nvarchar(10) not null,
 dayilyEndAt nvarchar(10) not null,
@@ -79,58 +74,52 @@ addBy  int references Employees(employeeID)
 
 create table MemberSubscriptions(
 memberSubscriptionID int identity(1,1) primary key,
-CoachsTraingingID int not null references CoachesTrainging,
+CoachsTraingingID int not null references CoachesTraingings,
 memberID int not null references Members,
 fee money not null,
 startDate datetime  default getDate(),
 endDate datetime null,
 addBy  int references Employees(employeeID))
 
-create table Employees(
-employeeID int identity(1,1) primary key,
-personID int not null references Peoples(personID),
-userName nvarchar(100) not null ,
-password nvarchar(max) not null,
-createdDate Datetime default getDate(),
-isActive bit not null default 0,
-addBy int references Employees(employeeID))
 
 
+GO
 
-create view  as Coaches_view
+create view  Coaches_view as 
 SELECT c.coacheID, p.personID, CAST(DAY(c.startTraingDate) AS nvarchar) + '-' + CAST(MONTH(c.startTraingDate) AS nvarchar) + '-' + CAST(YEAR(c.startTraingDate) AS nvarchar) + ' ' + CAST(FORMAT(c.startTraingDate, 'hh:mm tt') AS nvarchar) 
                   AS startTraingDate, p.fristName + ' ' + p.secondName + ' ' + p.thirdName + ' ' + p.familyName AS fullName, CASE WHEN p.gender = 1 THEN 'Male' ELSE 'Female' END AS gender, CAST(DAY(p.brithday) AS nvarchar) 
                   + '-' + CAST(MONTH(p.brithday) AS nvarchar) + '-' + CAST(YEAR(p.brithday) AS nvarchar) + ' ' + CAST(FORMAT(p.brithday, 'hh:mm tt') AS nvarchar) AS brithday, n.name AS nationality, p.phone, c.isActive, CAST(DAY(c.startTraingDate) 
                   AS nvarchar) + '-' + CAST(MONTH(c.endTraingDate) AS nvarchar) + '-' + CAST(YEAR(c.endTraingDate) AS nvarchar) + ' ' + CAST(FORMAT(c.endTraingDate, 'hh:mm tt') AS nvarchar) AS endTraingDate,
 				  c.addBy
-FROM     dbo.Peoples AS p INNER JOIN
-                  dbo.Nationalitys AS n ON p.nationalityID = n.nationalityID INNER JOIN
+FROM     Peoples AS p INNER JOIN
+                  Nationalitys AS n ON p.nationalityID = n.nationalityID INNER JOIN
                   dbo.Coaches AS c ON c.personID = p.personID
 
 
 
 
-
+GO
 create view CoachesTraingView as
 SELECT ct.CoachsTraingingID, p.fristName + ' ' + p.secondName + ' ' + p.thirdName + ' ' + p.familyName AS fullName, ct.isAvaliable, s.name AS sportName, ct.dayilyStartAt, ct.dayilyEndAt, CAST(ct.fee AS nvarchar) AS cost
-FROM     dbo.CoachesTrainging AS ct INNER JOIN
-                  dbo.Coaches AS c ON ct.coacheID = c.coacheID INNER JOIN
-                  dbo.Peoples AS p ON p.personID = c.personID INNER JOIN
-                  dbo.Sports AS s ON ct.sportID = s.sportID
+FROM     CoachesTraingings  ct INNER JOIN
+                  Coaches  c ON ct.coacheID = c.coacheID INNER JOIN
+                  Peoples  p ON p.personID = c.personID INNER JOIN
+                  Sports s ON ct.sportID = s.sportID
 WHERE  (c.isActive = 1)
 
 
 
+GO
 create view Employee_view as 
 SELECT e.employeeID, p.personID, e.userName, CAST(DAY(e.createdDate) AS nvarchar) + '-' + CAST(MONTH(e.createdDate) AS nvarchar) + '-' + CAST(YEAR(e.createdDate) AS nvarchar) + ' ' + CAST(FORMAT(e.createdDate, 'hh:mm tt') 
                   AS nvarchar) AS createdDate, p.fristName + ' ' + p.secondName + ' ' + p.thirdName + ' ' + p.familyName AS fullName, CASE WHEN p.gender = 1 THEN 'Male' ELSE 'Female' END AS gender, CAST(DAY(p.brithday) AS nvarchar) 
                   + '-' + CAST(MONTH(p.brithday) AS nvarchar) + '-' + CAST(YEAR(p.brithday) AS nvarchar) + ' ' + CAST(FORMAT(p.brithday, 'hh:mm tt') AS nvarchar) AS brithday, n.name AS nationality, p.phone, e.isActive
-FROM     dbo.Peoples AS p INNER JOIN
-                  dbo.Nationalitys AS n ON p.nationalityID = n.nationalityID INNER JOIN
-                  dbo.Employee AS e ON e.personID = p.personID
+FROM     Peoples AS p INNER JOIN
+                  Nationalitys AS n ON p.nationalityID = n.nationalityID INNER JOIN
+                 Employees AS e ON e.personID = p.personID
 
 
-
+go
 
 create  view  MemberSubscritptionView as
 SELECT ms.memberSubscriptionID AS subscriptionID, s.name AS sportName,
@@ -150,16 +139,18 @@ CAST(YEAR(ms.endDate) AS nvarchar) + ' ' +
 CAST(FORMAT(ms.endDate, 'hh:mm tt') AS nvarchar)
   AS endDate,
  c.coacheID, m.memberID
-FROM     dbo.MemberSubscriptions AS ms INNER JOIN
-                  dbo.CoachesTrainging AS ct ON ms.CoachsTraingingID = ct.CoachsTraingingID INNER JOIN
-                  dbo.Coaches AS c ON c.coacheID = ct.coacheID INNER JOIN
-                  dbo.Sports AS s ON s.sportID = ct.sportID INNER JOIN
-                  dbo.Members AS m ON m.memberID = ms.memberID INNER JOIN
-                  dbo.Peoples AS p ON m.personID = p.personID 
+FROM     MemberSubscriptions AS ms INNER JOIN
+                  CoachesTraingings ct ON ms.CoachsTraingingID = ct.CoachsTraingingID INNER JOIN
+                  Coaches  c ON c.coacheID = ct.coacheID INNER JOIN
+                  Sports  s ON s.sportID = ct.sportID INNER JOIN
+                  Members  m ON m.memberID = ms.memberID INNER JOIN
+                  Peoples  p ON m.personID = p.personID 
 
 
 
 
+
+GO
 create view member_view as 
 select m.memberID ,p.personID,
 (p.fristName+' '+p.secondName+' '+p.thirdName+' '+ p.familyName ) as fullName,
