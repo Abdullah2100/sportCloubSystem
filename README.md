@@ -66,8 +66,6 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 Project Link: [https://github.com/Abdullah2100/sportCloubSystem)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 
