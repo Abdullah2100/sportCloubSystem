@@ -6,12 +6,11 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-this peoject is about sport colub system . I build this poject to help any one want to have sport cloub system free . 
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
+This project is about a sport club system. I built this project to help anyone who wants to have a free sport club system.
+This project has many sections like people, members, coaches, employees, member subscriptions, and coach training. The structure of this project follows the 3-Tier Application Architecture.
+The data layer ensures integrity with the database, and the business layer handles the connection between the app UI and the data layer.
+When the app starts, it requires login functionality. You have to disable it in the code, then run the app. The UI may not be perfect, but the functionality is smooth.
 
 
 ### Built With
@@ -19,20 +18,16 @@ this peoject is about sport colub system . I build this poject to help any one w
 
 * Windows Form Application
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-before you run clone this project you must have sql server in you local mashine or you have to change the System.Data.SqlClient to another library that work with you won database .
-after that run the sql file ,then disable the loging functionality in the code 
 
 ### Installation
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
-
+ 
 1. Clone the repo
    ```sh
    git@github.com:Abdullah2100/sportCloubSystem.git
@@ -41,20 +36,7 @@ _Below is an example of how you can instruct your audience on installing and set
    
 3. run sql file on sql server 
 
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-
-
-
-
-
-
 See the [open issues](https://github.com/Abdullah2100/sportCloubSystem/issues) for a full list of proposed features (and known issues).
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
@@ -83,8 +65,7 @@ Don't forget to give the project a star! Thanks again!
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
+ 
 
 
 <!-- CONTACT -->
