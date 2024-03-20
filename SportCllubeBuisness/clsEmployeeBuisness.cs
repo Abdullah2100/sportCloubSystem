@@ -10,6 +10,7 @@ namespace SportCllubeBuisness
         enMode mode { get; set; }
         public int id { get; set; }
         public int personID { get; set; }
+        public int addBy { get; set; }
         public DateTime createDate { get; set; }
         public string userName { get; set; }
         public string password { get; set; }
@@ -20,6 +21,7 @@ namespace SportCllubeBuisness
         {
             id = 0;
             personID = 0;
+            addBy = 0;
             createDate = DateTime.Now;
             userName = "";
             password = "";
@@ -28,10 +30,11 @@ namespace SportCllubeBuisness
             mode = enMode.add;
         }
 
-        private clsEmployeeBuisness(enMode mode, int id, int personID, string userName, string password, DateTime createDate, bool isActive)
+        private clsEmployeeBuisness(enMode mode, int id, int personID, int addBy, string userName, string password, DateTime createDate, bool isActive)
         {
             this.id = id;
             this.personID = personID;
+            this.addBy = addBy;
             this.userName = userName;
             this.password = password;
             this.createDate = createDate;
@@ -46,6 +49,7 @@ namespace SportCllubeBuisness
 
             this.id = clsEmployeeData.createEmployee(
                 personID,
+                addBy,
                 userName,
                 password,
                 isActive
@@ -59,6 +63,7 @@ namespace SportCllubeBuisness
             return clsEmployeeData.updateEmployee(
                  id,
                  personID,
+                 addBy,
                  userName,
                  password,
                  isActive
@@ -93,14 +98,15 @@ namespace SportCllubeBuisness
         public static clsEmployeeBuisness findEmployeeByID(int id)
         {
             int personID = 0;
+            int addBy = 0;
             DateTime createDate = DateTime.Now;
             string userName = "";
             string password = "";
             bool isActive = false;
 
-            if (clsEmployeeData.findEmployeeByID(id, ref personID, ref userName, ref password, ref createDate, ref isActive))
+            if (clsEmployeeData.findEmployeeByID(id, ref personID, ref addBy, ref userName, ref password, ref createDate, ref isActive))
             {
-                return new clsEmployeeBuisness(enMode.update, id, personID, userName, password, createDate, isActive);
+                return new clsEmployeeBuisness(enMode.update, id, personID, addBy, userName, password, createDate, isActive);
             }
             return null;
 
@@ -109,14 +115,15 @@ namespace SportCllubeBuisness
         public static clsEmployeeBuisness findEmployeeByPersonID(int personID)
         {
             int id = 0;
+            int addBy = 0;
             DateTime createDate = DateTime.Now;
             string userName = "";
             string password = "";
             bool isActive = false;
 
-            if (clsEmployeeData.findEmpoyeeByUserPersonID(ref id, personID, ref userName, ref password, ref createDate, ref isActive))
+            if (clsEmployeeData.findEmpoyeeByUserPersonID(ref id, personID, ref addBy, ref userName, ref password, ref createDate, ref isActive))
             {
-                return new clsEmployeeBuisness(enMode.update, id, personID, userName, password, createDate, isActive);
+                return new clsEmployeeBuisness(enMode.update, id, personID, addBy, userName, password, createDate, isActive);
             }
             return null;
 
@@ -126,13 +133,14 @@ namespace SportCllubeBuisness
         public static clsEmployeeBuisness findEmployeeByUserNameAndPassword(string userName, string password)
         {
             int id = 0;
+            int addBy = 0;
             DateTime createDate = DateTime.Now;
             int personID = 0;
             bool isActive = false;
 
-            if (clsEmployeeData.findEmpoyeeByUserNameAndPassword(ref id, ref personID, userName, password, ref createDate, ref isActive))
+            if (clsEmployeeData.findEmpoyeeByUserNameAndPassword(ref id, ref personID, ref addBy, userName, password, ref createDate, ref isActive))
             {
-                return new clsEmployeeBuisness(enMode.update, id, personID, userName, password, createDate, isActive);
+                return new clsEmployeeBuisness(enMode.update, id, personID, addBy, userName, password, createDate, isActive);
             }
             return null;
 

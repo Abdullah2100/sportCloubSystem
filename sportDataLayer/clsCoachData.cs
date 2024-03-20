@@ -13,6 +13,7 @@ namespace sportDataLayer
             (
             int id,
             ref int personID,
+            ref int addBy,
             ref DateTime startTraingDate,
             ref DateTime? endTraingDate,
             ref bool isActive)
@@ -37,6 +38,7 @@ namespace sportDataLayer
                             {
                                 isFound = true;
                                 personID = (int)reader["personID"];
+                                addBy = (int)reader["addBy"];
                                 startTraingDate = (DateTime)reader["startTraingDate"];
                                 if (reader["endTraingDate"] == DBNull.Value)
                                     endTraingDate = null;
@@ -66,6 +68,7 @@ namespace sportDataLayer
         (
             ref int id,
             int personID,
+            ref int addBy,
             ref DateTime startTraingDate,
             ref DateTime? endTraingDate,
             ref bool isActive)
@@ -90,6 +93,7 @@ namespace sportDataLayer
                             {
                                 isFound = true;
                                 id = (int)reader["coacheID"];
+                                addBy = (int)reader["addBy"];
                                 startTraingDate = (DateTime)reader["startTraingDate"];
                                 if (reader["endTraingDate"] == DBNull.Value)
                                     endTraingDate = null;
@@ -119,6 +123,7 @@ namespace sportDataLayer
         public static int createCoach
            (
                int personID,
+                int addBy,
                 DateTime startTraingDate,
                 DateTime? endTraingDate,
                 bool isActive)
@@ -134,14 +139,15 @@ namespace sportDataLayer
 
                     con.Open();
                     string query = @"
-                                  INSERT INTO Coaches (personID,startTraingDate,isActive)
-                                  VALUES(@personID,@startTraingDate,@isActive);
+                                  INSERT INTO Coaches (personID,addBy,startTraingDate,isActive)
+                                  VALUES(@personID,@addBy,@startTraingDate,@isActive);
                                   select SCOPE_IDENTITY();";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@personID", personID);
                         cmd.Parameters.AddWithValue("@startTraingDate", personID);
                         cmd.Parameters.AddWithValue("@isActive", personID);
+                        cmd.Parameters.AddWithValue("@addBy", addBy);
                         object result = cmd.ExecuteScalar();
                         if (result != null && int.TryParse(result.ToString(), out int cachID))
                         {
@@ -169,6 +175,7 @@ namespace sportDataLayer
                 (
                     int id,
                     int personID,
+                    int addBy,
                      DateTime startTraingDate,
                      DateTime? endTraingDate,
                      bool isActive)
@@ -186,6 +193,7 @@ namespace sportDataLayer
                     string query = @"
                                   Update Coaches set personID = @personID
                                   ,startTraingDate = @startTraingDate,
+                                   addBy = @addBy
                                    isActive =@isActive
                                    where coacheID = @id;
                                    ";
@@ -195,6 +203,7 @@ namespace sportDataLayer
                         cmd.Parameters.AddWithValue("@personID", personID);
                         cmd.Parameters.AddWithValue("@startTraingDate", personID);
                         cmd.Parameters.AddWithValue("@isActive", personID);
+                        cmd.Parameters.AddWithValue("@addBy", addBy);
                         int result = cmd.ExecuteNonQuery();
                         if (result > 0)
                         {

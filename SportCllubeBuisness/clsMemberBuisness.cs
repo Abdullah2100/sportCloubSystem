@@ -9,6 +9,7 @@ namespace SportCllubeBuisness
         public enMode mode { get; set; }
         public int id { get; set; }
         public int personID { get; set; }
+        public int addBy { get; set; }
         public bool isActive { get; set; }
 
         public clsPeopleBuisness personInfo;
@@ -18,15 +19,17 @@ namespace SportCllubeBuisness
             this.mode = enMode.add;
             this.id = 0;
             this.personID = 0;
+            this.addBy = 0;
             this.isActive = false;
 
         }
 
-        private clsMemberBuisness(enMode mode, int id, int personID, bool isActive)
+        private clsMemberBuisness(enMode mode, int id, int personID, int addBy, bool isActive)
         {
             this.mode = mode;
             this.id = id;
             this.personID = personID;
+            this.addBy = addBy;
             this.isActive = isActive;
             personInfo = clsPeopleBuisness.findPeopleByID(personID);
         }
@@ -35,10 +38,11 @@ namespace SportCllubeBuisness
         public static clsMemberBuisness findMemberByID(int id)
         {
             int personID = 0;
+            int addBy = 0;
             bool isActive = false;
-            if (clsMemberData.findMemberByID(id, ref personID, ref isActive))
+            if (clsMemberData.findMemberByID(id, ref personID, ref addBy, ref isActive))
             {
-                return new clsMemberBuisness(enMode.update, id, personID, isActive);
+                return new clsMemberBuisness(enMode.update, id, personID, addBy, isActive);
             }
 
             return null;
@@ -48,10 +52,11 @@ namespace SportCllubeBuisness
         public static clsMemberBuisness findMemberByPersonID(int personID)
         {
             int id = 0;
+            int addBy = 0;
             bool isActive = false;
-            if (clsMemberData.findMemberByPersonID(ref id, personID, ref isActive))
+            if (clsMemberData.findMemberByPersonID(ref id, personID, ref addBy, ref isActive))
             {
-                return new clsMemberBuisness(enMode.update, id, personID, isActive);
+                return new clsMemberBuisness(enMode.update, id, personID, addBy, isActive);
             }
 
             return null;
@@ -61,6 +66,7 @@ namespace SportCllubeBuisness
         {
             this.id = clsMemberData.createMember(
                 this.personID,
+                this.addBy,
                 this.isActive
                 );
             return (this.id != 0);
@@ -71,6 +77,7 @@ namespace SportCllubeBuisness
             return clsMemberData.updateMember(
                            this.id,
                            this.personID,
+                           this.addBy,
                            this.isActive);
         }
 

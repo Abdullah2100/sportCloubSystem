@@ -10,6 +10,7 @@ namespace SportCllubeBuisness
         public int id { get; set; }
         public int coachID { get; set; }
         public int sportID { get; set; }
+        public int addBy { get; set; }
         public int trainingDay { get; set; }
         public string dayilyStartAt { get; set; }
         public string dayilyEndAt { get; set; }
@@ -25,6 +26,7 @@ namespace SportCllubeBuisness
             this.mode = enMode.add;
             this.id = 0;
             this.coachID = 0;
+            this.addBy = 0;
             this.sportID = 0;
             this.trainingDay = 0;
             this.dayilyStartAt = "";
@@ -32,13 +34,15 @@ namespace SportCllubeBuisness
             this.isAvaliable = false;
             this.fee = 0;
 
+
         }
 
-        private clsCoachTrainingBuisness(enMode mode, int id, int coachID, int sportID, int trainingDay, string dayilyStartAt, string dayilyEndAt, bool isAvaliable, decimal fee)
+        private clsCoachTrainingBuisness(enMode mode, int id, int coachID, int addBy, int sportID, int trainingDay, string dayilyStartAt, string dayilyEndAt, bool isAvaliable, decimal fee)
         {
             this.mode = mode;
             this.id = id;
             this.coachID = coachID;
+            this.addBy = addBy;
             this.sportID = sportID;
             this.trainingDay = trainingDay;
             this.dayilyStartAt = dayilyStartAt;
@@ -53,6 +57,7 @@ namespace SportCllubeBuisness
         {
 
             int coachID = 0;
+            int addBy = 0;
             int sportID = 0;
             bool isAvaliable = false;
             string dayilyStartAt = "";
@@ -60,9 +65,9 @@ namespace SportCllubeBuisness
             int trainingDay = 0;
             decimal fee = 0;
 
-            if (clsCoachsTraingingData.findCoachsTrainging(id, ref coachID, ref sportID, ref isAvaliable, ref dayilyStartAt, ref dayilyEndAt, ref trainingDay, ref fee))
+            if (clsCoachsTraingingData.findCoachsTrainging(id, ref coachID, ref addBy, ref sportID, ref isAvaliable, ref dayilyStartAt, ref dayilyEndAt, ref trainingDay, ref fee))
             {
-                return new clsCoachTrainingBuisness(enMode.update, id, coachID, sportID, trainingDay, dayilyStartAt, dayilyEndAt, isAvaliable, fee);
+                return new clsCoachTrainingBuisness(enMode.update, id, coachID, addBy, sportID, trainingDay, dayilyStartAt, dayilyEndAt, isAvaliable, fee);
             }
 
             return null;
@@ -73,6 +78,7 @@ namespace SportCllubeBuisness
         {
 
             int id = 0;
+            int addBy = 0;
             int sportID = 0;
             bool isAvaliable = false;
             string dayilyStartAt = "";
@@ -80,9 +86,9 @@ namespace SportCllubeBuisness
             int trainingDay = 0;
             decimal fee = 0;
 
-            if (clsCoachsTraingingData.findCoachsTrainging(ref id, coachID, ref sportID, ref isAvaliable, ref dayilyStartAt, ref dayilyEndAt, ref trainingDay, ref fee))
+            if (clsCoachsTraingingData.findCoachsTrainging(ref id, coachID, ref addBy, ref sportID, ref isAvaliable, ref dayilyStartAt, ref dayilyEndAt, ref trainingDay, ref fee))
             {
-                return new clsCoachTrainingBuisness(enMode.update, id, coachID, sportID, trainingDay, dayilyStartAt, dayilyEndAt, isAvaliable, fee);
+                return new clsCoachTrainingBuisness(enMode.update, id, coachID, addBy, sportID, trainingDay, dayilyStartAt, dayilyEndAt, isAvaliable, fee);
             }
 
             return null;
@@ -93,6 +99,7 @@ namespace SportCllubeBuisness
         {
             this.id = clsCoachsTraingingData.createCoachesTraineing(
             this.coachID,
+            this.addBy,
             this.sportID,
             this.isAvaliable,
             this.dayilyStartAt,
@@ -108,6 +115,7 @@ namespace SportCllubeBuisness
             return clsCoachsTraingingData.updateCoachTraining(
                 this.id,
                 this.coachID,
+                this.addBy,
                 this.sportID,
                 this.isAvaliable,
                 this.dayilyStartAt,

@@ -1,4 +1,5 @@
 create  database ClubeSportDB
+go 
 
 use ClubeSportDB
 
@@ -6,20 +7,20 @@ create table Sports(
 sportID int identity(1,1) primary key,
 name nvarchar(50) not null,
 createdDate datetime default GETDATE(),
-isActive bit default 1)
-
-create table SubscriptionTypes(
-subscriptionTypeID smallint primary key,
-feeMultiplyBy money  not null,
-daysNumber smallint
+isActive bit default 1,
+addBy  int references Employees(employeeID)
 )
+
+
 
 create table Nationalitys(
 nationalityID int primary key ,
-name nvarchar  (20))
+name nvarchar  (20),
+addBy  int references Employees(employeeID)
+)
 
 create table Peoples(
-personIDint identity(1,1) primary key,
+personID int identity(1,1) primary key,
 fristName nvarchar(20) not null,
 secondName nvarchar(20) not null,
 thirdName nvarchar(20) not null,
@@ -28,14 +29,12 @@ brithday datetime not null,
 gender bit not null,
 nationalityID int references Nationalitys(nationalityID) ,
 address nvarchar(200) not null,
-phone nvarchar(15) not null)
-
-Create table Nationality(
-nationalityID int identity(1,1) primary key,
-name nvarchar(20) not null)
+phone nvarchar(15) not null,
+addBy  int references Employees(employeeID)
+)
 
 
-create table People(
+create table Peoples(
 personID int identity(1,1) primary key,
 fristName nvarchar(20) not null,
 secondName nvarchar(20) not null,
@@ -45,13 +44,15 @@ brithday Datetime not null,
 gender bit not null,
 nationalityID int references Nationalitys(nationalityID),
 address nvarchar(200) not null,
-phone nvarchar(15) not null
+phone nvarchar(15) not null,
+addBy  int references Employees(employeeID)
 )
 
 create table Members(
 memberID int identity(1,1) primary key,
 personID int references Peoples(personID),
-isActive bit default(1)
+isActive bit default(1),
+addBy  int references Employees(employeeID)
 )
 
 
@@ -61,17 +62,19 @@ personID int references Peoples(personID),
 startTraingDate Datetime default getDate(),
 endTraingDate Datetime null,
 personalImage nvarchar(max)not null,
-isActive bit default 1
+isActive bit default 1,
+addBy  int references Employees(employeeID)
 )
 
-create table CoachesTrainging(
+create table CoachesTraingings(
 CoachsTraingingID int identity(1,1)primary key,
 sportID int not null references Sports(sportID),
 isAvaliable bit default 1,
 dayilyStartAt nvarchar(10) not null,
 dayilyEndAt nvarchar(10) not null,
 trainingDay int null,
-fee money not null
+fee money not null,
+addBy  int references Employees(employeeID)
 ) 
 
 create table MemberSubscriptions(
@@ -80,15 +83,17 @@ CoachsTraingingID int not null references CoachesTrainging,
 memberID int not null references Members,
 fee money not null,
 startDate datetime  default getDate(),
-endDate datetime null)
+endDate datetime null,
+addBy  int references Employees(employeeID))
 
-create table Employee(
+create table Employees(
 employeeID int identity(1,1) primary key,
 personID int not null references Peoples(personID),
 userName nvarchar(100) not null ,
 password nvarchar(max) not null,
 createdDate Datetime default getDate(),
-isActive bit not null default 0)
+isActive bit not null default 0,
+addBy int references Employees(employeeID))
 
 
 
@@ -96,10 +101,12 @@ create view  as Coaches_view
 SELECT c.coacheID, p.personID, CAST(DAY(c.startTraingDate) AS nvarchar) + '-' + CAST(MONTH(c.startTraingDate) AS nvarchar) + '-' + CAST(YEAR(c.startTraingDate) AS nvarchar) + ' ' + CAST(FORMAT(c.startTraingDate, 'hh:mm tt') AS nvarchar) 
                   AS startTraingDate, p.fristName + ' ' + p.secondName + ' ' + p.thirdName + ' ' + p.familyName AS fullName, CASE WHEN p.gender = 1 THEN 'Male' ELSE 'Female' END AS gender, CAST(DAY(p.brithday) AS nvarchar) 
                   + '-' + CAST(MONTH(p.brithday) AS nvarchar) + '-' + CAST(YEAR(p.brithday) AS nvarchar) + ' ' + CAST(FORMAT(p.brithday, 'hh:mm tt') AS nvarchar) AS brithday, n.name AS nationality, p.phone, c.isActive, CAST(DAY(c.startTraingDate) 
-                  AS nvarchar) + '-' + CAST(MONTH(c.endTraingDate) AS nvarchar) + '-' + CAST(YEAR(c.endTraingDate) AS nvarchar) + ' ' + CAST(FORMAT(c.endTraingDate, 'hh:mm tt') AS nvarchar) AS endTraingDate
+                  AS nvarchar) + '-' + CAST(MONTH(c.endTraingDate) AS nvarchar) + '-' + CAST(YEAR(c.endTraingDate) AS nvarchar) + ' ' + CAST(FORMAT(c.endTraingDate, 'hh:mm tt') AS nvarchar) AS endTraingDate,
+				  c.addBy
 FROM     dbo.Peoples AS p INNER JOIN
                   dbo.Nationalitys AS n ON p.nationalityID = n.nationalityID INNER JOIN
                   dbo.Coaches AS c ON c.personID = p.personID
+
 
 
 
@@ -166,6 +173,7 @@ CAST(FORMAT(p.brithday, 'hh:mm tt') AS nvarchar) AS brithday
 from Peoples p inner join Nationalitys n on p.nationalityID = n.nationalityID
 inner join Members m 
 on m.personID = p.personID
+
 
 
  

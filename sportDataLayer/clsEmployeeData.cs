@@ -13,6 +13,7 @@ namespace sportDataLayer
             (
             int id,
             ref int personID,
+            ref int addBy,
             ref string userName,
             ref string password,
             ref DateTime createDate,
@@ -29,7 +30,7 @@ namespace sportDataLayer
 
 
                     con.Open();
-                    string query = @"select * from Employee where employeeID = @id";
+                    string query = @"select * from Employees where employeeID = @id";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@id", id);
@@ -39,6 +40,7 @@ namespace sportDataLayer
                             {
                                 isFound = true;
                                 personID = (int)reader["personID"];
+                                addBy = (int)reader["addBy"];
                                 createDate = (DateTime)reader["createdDate"];
                                 userName = (string)reader["userName"];
                                 password = (string)reader["password"];
@@ -66,6 +68,7 @@ namespace sportDataLayer
             (
             ref int id,
              int personID,
+             ref int addBy,
             ref string userName,
             ref string password,
             ref DateTime createdDate,
@@ -82,7 +85,7 @@ namespace sportDataLayer
 
 
                     con.Open();
-                    string query = @"select * from Employee where personID = @personID";
+                    string query = @"select * from Employees where personID = @personID";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@personID", personID);
@@ -91,6 +94,7 @@ namespace sportDataLayer
                             if (reader.Read())
                             {
                                 isFound = true;
+                                addBy = (int)reader["addBy"];
                                 userName = (string)reader["userName"];
                                 createdDate = (DateTime)reader["createdDate"];
                                 id = (int)reader["employeeID"];
@@ -120,6 +124,7 @@ namespace sportDataLayer
             (
             ref int id,
             ref int personID,
+            ref int addBy,
             string userName,
             string password,
             ref DateTime createdDate,
@@ -136,7 +141,7 @@ namespace sportDataLayer
 
 
                     con.Open();
-                    string query = @"select * from Employee where userName = @userName and password = @password";
+                    string query = @"select * from Employees where userName = @userName and password = @password";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@userName", userName);
@@ -147,6 +152,7 @@ namespace sportDataLayer
                             {
                                 isFound = true;
                                 personID = (int)reader["personID"];
+                                addBy = (int)reader["addBy"];
                                 createdDate = (DateTime)reader["createdDate"];
                                 id = (int)reader["employeeID"];
                                 isActive = (bool)reader["isActive"];
@@ -174,6 +180,7 @@ namespace sportDataLayer
         public static int createEmployee
             (
             int personID,
+            int addBy,
             string userName,
             string password,
             bool isActive
@@ -190,12 +197,13 @@ namespace sportDataLayer
 
                     con.Open();
                     string query = @"
-                                  INSERT INTO Employee (personID,userName,password,isActive)
-                                  VALUES(@personID,@userName,@password,@isActive);
+                                  INSERT INTO Employees (personID,addBy,userName,password,isActive)
+                                  VALUES(@personID,@addBy,@userName,@password,@isActive);
                                   select SCOPE_IDENTITY();";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@personID", personID);
+                        cmd.Parameters.AddWithValue("@addBy", addBy);
                         cmd.Parameters.AddWithValue("@userName", userName);
                         cmd.Parameters.AddWithValue("@password", password);
                         cmd.Parameters.AddWithValue("@isActive", personID);
@@ -226,6 +234,7 @@ namespace sportDataLayer
             (
             int id,
             int personID,
+            int addBy,
             string userName,
             string password,
             bool isActive
@@ -242,7 +251,8 @@ namespace sportDataLayer
 
                     con.Open();
                     string query = @"
-                                  Update Employee set personID = @personID
+                                  Update Employees set personID = @personID
+                                  ,addBy = @addBy
                                   ,userName = @userName,
                                    password = @password,
                                    isActive =@isActive
@@ -290,7 +300,7 @@ namespace sportDataLayer
 
 
                     con.Open();
-                    string query = @"delete from Employee where employeeID = @id";
+                    string query = @"delete from Employees where employeeID = @id";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@id", id);
@@ -357,7 +367,7 @@ namespace sportDataLayer
                 using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
-                    string query = @"update Employee set
+                    string query = @"update Employees set
                                      isActive = @isActive
                                      where employeeID = @id
 ";
@@ -398,7 +408,7 @@ namespace sportDataLayer
 
 
                     con.Open();
-                    string query = @"select found =1 from Employee where employeeID = @id and isActive =1 ";
+                    string query = @"select found =1 from Employees where employeeID = @id and isActive =1 ";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@id", id);
@@ -474,7 +484,7 @@ namespace sportDataLayer
 
 
                     con.Open();
-                    string query = @"select found =1 from Employee where personID = @personID ";
+                    string query = @"select found =1 from Employees where personID = @personID ";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@personID", personID);
@@ -513,7 +523,7 @@ namespace sportDataLayer
 
 
                     con.Open();
-                    string query = @"select found =1 from Employee where userName = @userName ";
+                    string query = @"select found =1 from Employees where userName = @userName ";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@userName", userName);

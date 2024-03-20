@@ -12,6 +12,7 @@ namespace sportDataLayer
         public static bool findMemberByPersonID(
             ref int id,
             int personID,
+            ref int addBy,
             ref bool isActive
     )
         {
@@ -32,6 +33,7 @@ namespace sportDataLayer
                             {
                                 isFound = true;
                                 id = (int)reader["memberID"];
+                                addBy = (int)reader["addBy"];
                                 isActive = (bool)reader["isActive"];
                             }
                         }
@@ -51,6 +53,7 @@ namespace sportDataLayer
 
             int id,
             ref int personID,
+            ref int addBy,
             ref bool isActive
     )
         {
@@ -71,6 +74,7 @@ namespace sportDataLayer
                             {
                                 isFound = true;
                                 personID = (int)reader["personID"];
+                                addBy = (int)reader["addBy"];
                                 isActive = (bool)reader["isActive"];
                             }
                         }
@@ -94,6 +98,7 @@ namespace sportDataLayer
 
         public static int createMember(
              int personID,
+             int addBy,
              bool isActive
             )
         {
@@ -103,7 +108,7 @@ namespace sportDataLayer
                 using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
-                    string query = @"insert into Members (personID,isActive)values (@personID,@isActive);
+                    string query = @"insert into Members (personID,addBy,isActive)values (@personID,@addBy,@isActive);
                                      select SCOPE_IDENTITY();";
 
                     using (SqlCommand cmd = new SqlCommand(query, con))
@@ -166,6 +171,7 @@ namespace sportDataLayer
 
             int id,
              int personID,
+             int addBy,
              bool isActive
             )
         {
@@ -177,6 +183,7 @@ namespace sportDataLayer
                     con.Open();
                     string query = @"update Members set
                                      personID = @personID,
+                                     addBy = @addBy,
                                      isActive = @isActive
                                      where memberID = @id
 ";

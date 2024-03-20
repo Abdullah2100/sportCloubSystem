@@ -9,6 +9,7 @@ namespace SportCllubeBuisness
         public enum enMode { add, update };
         public enMode mode { get; set; }
         public int id { get; set; }
+        public int addBy { get; set; }
         public string name { get; set; }
         public DateTime createdAt { get; set; }
         public bool isActive { get; set; }
@@ -17,15 +18,17 @@ namespace SportCllubeBuisness
         {
             this.mode = enMode.add;
             this.id = 0;
+            this.addBy = 0;
             this.name = "";
             this.createdAt = DateTime.Now;
             this.isActive = true;
         }
 
-        private clsSportBuisness(enMode mode, int id, string name, DateTime createdAt, bool isActive)
+        private clsSportBuisness(enMode mode, int id, int addBy, string name, DateTime createdAt, bool isActive)
         {
             this.mode = mode;
             this.id = id;
+            this.addBy = addBy;
             this.name = name;
             this.createdAt = createdAt;
             this.isActive = isActive;
@@ -33,13 +36,14 @@ namespace SportCllubeBuisness
 
         public static clsSportBuisness findSport(int id)
         {
+            int addBy = 0;
             string name = "ahemd";
             DateTime createdAt = DateTime.Now;
             bool isActive = true;
 
-            if (clsSportData.findSportByID(id, ref name, ref createdAt, ref isActive))
+            if (clsSportData.findSportByID(id, ref addBy, ref name, ref createdAt, ref isActive))
             {
-                return new clsSportBuisness(enMode.update, id, name, createdAt, isActive);
+                return new clsSportBuisness(enMode.update, id, addBy, name, createdAt, isActive);
             }
             return null;
         }
@@ -47,23 +51,24 @@ namespace SportCllubeBuisness
         public static clsSportBuisness findSport(string name)
         {
             int id = 0;
+            int addBy = 0;
             DateTime createdAt = DateTime.Now;
             bool isActive = true;
 
-            if (clsSportData.findSportByName(ref id, name, ref createdAt, ref isActive))
+            if (clsSportData.findSportByName(ref id, ref addBy, name, ref createdAt, ref isActive))
             {
-                return new clsSportBuisness(enMode.update, id, name, createdAt, isActive);
+                return new clsSportBuisness(enMode.update, id, addBy, name, createdAt, isActive);
             }
             return null;
         }
 
         private bool _add()
         {
-            return clsSportData.addNewSport(this.name);
+            return clsSportData.addNewSport(this.addBy, this.name);
         }
         private bool _update()
         {
-            return clsSportData.updateSport(this.id, this.name, this.isActive);
+            return clsSportData.updateSport(this.id, this.addBy, this.name, this.isActive);
         }
 
         public bool save()

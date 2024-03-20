@@ -9,6 +9,7 @@ namespace SportCllubeBuisness
         public enum enMode { add, update };
         public enMode mode { get; set; }
         public int id { get; set; }
+        public int addBy { get; set; }
         public string firstName { get; set; }
         public string secondName { get; set; }
         public string thirdName { get; set; }
@@ -28,6 +29,7 @@ namespace SportCllubeBuisness
         {
             this.mode = enMode.add;
             this.id = 0;
+            this.addBy = addBy;
             this.firstName = "";
             this.secondName = "";
             string thirdName = "";
@@ -39,10 +41,11 @@ namespace SportCllubeBuisness
             string phone = "";
         }
 
-        private clsPeopleBuisness(enMode mode, int id, string firstName, string secondName, string thirdName, string familyName, DateTime brithday, bool gender, int nationalityID, string address, string phone)
+        private clsPeopleBuisness(enMode mode, int id, int addBy, string firstName, string secondName, string thirdName, string familyName, DateTime brithday, bool gender, int nationalityID, string address, string phone)
         {
             this.mode = mode;
             this.id = id;
+            this.addBy = addBy;
             this.firstName = firstName;
             this.secondName = secondName;
             this.thirdName = thirdName;
@@ -57,6 +60,7 @@ namespace SportCllubeBuisness
 
         public static clsPeopleBuisness findPeopleByID(int id)
         {
+            int addBy = 0;
             string firstName = "";
             string secondName = "";
             string thirdName = "";
@@ -66,17 +70,18 @@ namespace SportCllubeBuisness
             int nationalityID = 0;
             string address = "";
             string phone = " ";
-            if (clsPeoplesData.findPeoplesByID(id, ref firstName, ref secondName, ref thirdName, ref familyName, ref brithday, ref gender, ref nationalityID, ref address, ref phone))
+            if (clsPeoplesData.findPeoplesByID(id, ref addBy, ref firstName, ref secondName, ref thirdName, ref familyName, ref brithday, ref gender, ref nationalityID, ref address, ref phone))
             {
 
-                return new clsPeopleBuisness(enMode.update, id, firstName, secondName, thirdName, familyName, brithday, gender, nationalityID, address, phone);
+                return new clsPeopleBuisness(enMode.update, id, addBy, firstName, secondName, thirdName, familyName, brithday, gender, nationalityID, address, phone);
             }
             return null;
         }
 
-        protected static clsPeopleBuisness findPeoplebyFullName(string fullName)
+        protected static clsPeopleBuisness findPeopleByFullName(string fullName)
         {
             int id = 0;
+            int addBy = 0;
             string firstName = "";
             string secondName = "";
             string thirdName = "";
@@ -86,10 +91,10 @@ namespace SportCllubeBuisness
             int nationalityID = 0;
             string address = "";
             string phone = " ";
-            if (clsPeoplesData.findPeoplesByFullName(fullName, ref id, ref firstName, ref secondName, ref thirdName, ref familyName, ref brithday, ref gender, ref nationalityID, ref address, ref phone))
+            if (clsPeoplesData.findPeoplesByFullName(fullName, ref id, ref addBy, ref firstName, ref secondName, ref thirdName, ref familyName, ref brithday, ref gender, ref nationalityID, ref address, ref phone))
             {
 
-                return new clsPeopleBuisness(enMode.update, id, firstName, secondName, thirdName, familyName, brithday, gender, nationalityID, address, phone);
+                return new clsPeopleBuisness(enMode.update, id, addBy, firstName, secondName, thirdName, familyName, brithday, gender, nationalityID, address, phone);
             }
             return null;
         }
@@ -113,31 +118,11 @@ namespace SportCllubeBuisness
             }
             return null;
         }
-
-        public static clsPeopleBuisness findPeopleByFullName(string fullName)
-        {
-            string firstName = "";
-            string secondName = "";
-            string thirdName = "";
-            string familyName = "";
-            DateTime brithday = DateTime.Now;
-            bool gender = false;
-            int nationalityID = 0;
-            string address = "";
-            string phone = "";
-            int id = 0;
-            if (clsPeoplesData.findPeopleByFullName(fullName, ref id, ref firstName, ref secondName, ref thirdName, ref familyName, ref brithday, ref gender, ref nationalityID, ref address, ref phone))
-            {
-
-                return new clsPeopleBuisness(enMode.update, id, firstName, secondName, thirdName, familyName, brithday, gender, nationalityID, address, phone);
-            }
-            return null;
-        }
-
         private bool _add()
         {
             this.id = clsPeoplesData.createPeoples(
                 this.id,
+                this.addBy,
                 this.firstName,
                 this.secondName,
                 this.thirdName,
@@ -154,6 +139,7 @@ namespace SportCllubeBuisness
         {
             return clsPeoplesData.updatePeoples(
                            this.id,
+                           this.addBy,
                            this.firstName,
                            this.secondName,
                            this.thirdName,

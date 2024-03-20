@@ -11,6 +11,7 @@ namespace sportDataLayer
 
         public static bool findPeoplesByID(
             int id,
+            ref int addBy,
             ref string fristName,
             ref string secondName,
             ref string thirdName,
@@ -37,6 +38,7 @@ namespace sportDataLayer
                             if (reader.Read())
                             {
                                 isFound = true;
+                                addBy = (int)reader["addBy"];
                                 fristName = (string)reader["fristName"];
                                 secondName = (string)reader["secondName"];
                                 thirdName = (string)reader["thirdName"];
@@ -64,6 +66,7 @@ namespace sportDataLayer
         public static bool findPeoplesByFullName(
          string fullName,
          ref int id,
+         ref int addBy,
          ref string fristName,
          ref string secondName,
          ref string thirdName,
@@ -92,6 +95,7 @@ namespace sportDataLayer
                             {
                                 isFound = true;
                                 id = (int)reader["personID"];
+                                addBy = (int)reader["addBy"];
                                 fristName = (string)reader["fristName"];
                                 secondName = (string)reader["secondName"];
                                 thirdName = (string)reader["thirdName"];
@@ -235,6 +239,7 @@ namespace sportDataLayer
 
         public static int createPeoples(
           int id,
+          int addBy,
           string firstName,
           string secondName,
           string thirdName,
@@ -252,14 +257,15 @@ namespace sportDataLayer
                 {
                     con.Open();
                     string query = @"insert into Peoples  
-                                   (fristName,secondName,thirdName,familyName,phone,gender,brithday,nationalityID,address)
-                                   VALUES(@firstName,@secondName,@thirdname,@familyName,@phone,@gender,@brithDay,@nationalityID,@address)
+                                   (addBy,fristName,secondName,thirdName,familyName,phone,gender,brithday,nationalityID,address)
+                                   VALUES(@addBy,@firstName,@secondName,@thirdname,@familyName,@phone,@gender,@brithDay,@nationalityID,@address)
                                    select SCOPE_IDENTITY() ;  
                                    ";
 
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
 
+                        cmd.Parameters.AddWithValue("@addBy", addBy);
                         cmd.Parameters.AddWithValue("@firstName", firstName);
                         cmd.Parameters.AddWithValue("@secondName", secondName);
                         cmd.Parameters.AddWithValue("@thirdname", thirdName);
@@ -320,6 +326,7 @@ namespace sportDataLayer
 
         public static bool updatePeoples(
            int id,
+           int addBy,
            string firstName,
            string secondName,
            string thirdName,
@@ -337,6 +344,7 @@ namespace sportDataLayer
                 {
                     con.Open();
                     string query = @"update Peoples set 
+                                    addBy = @addBy,
                                     fristName = @firstName,
                                     secondName = @secondName,
                                     thirdName = @thirdname,
@@ -351,6 +359,7 @@ namespace sportDataLayer
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@id", id);
+                        cmd.Parameters.AddWithValue("@addBy", addBy);
                         cmd.Parameters.AddWithValue("@firstName", firstName);
                         cmd.Parameters.AddWithValue("@secondName", secondName);
                         cmd.Parameters.AddWithValue("@thirdname", thirdName);

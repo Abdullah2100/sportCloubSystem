@@ -12,6 +12,7 @@ namespace sportDataLayer
         public static bool findMemberSubscriptionByID(
              int id,
             ref int memberID,
+            ref int addBy,
             ref int CoachsTraingingID,
             ref decimal fee,
             ref DateTime startDate,
@@ -35,6 +36,7 @@ namespace sportDataLayer
                             {
                                 isFound = true;
                                 memberID = (int)reader["memberID"];
+                                addBy = (int)reader["addBy"];
                                 CoachsTraingingID = (int)reader["CoachsTraingingID"];
                                 fee = (decimal)reader["fee"];
                                 startDate = (DateTime)reader["startDate"];
@@ -56,6 +58,7 @@ namespace sportDataLayer
         public static bool findMemberSubscriptionByMemberID(
                  ref int id,
                   int memberID,
+                 ref int addBy,
                  ref int CoachsTraingingID,
                  ref decimal fee,
                  ref DateTime startDate,
@@ -79,6 +82,7 @@ namespace sportDataLayer
                             {
                                 isFound = true;
                                 id = (int)reader["memberSubscriptionID"];
+                                addBy = (int)reader["addBy"];
                                 CoachsTraingingID = (int)reader["CoachsTraingingID"];
                                 fee = (decimal)reader["fee"];
                                 startDate = (DateTime)reader["startDate"];
@@ -103,6 +107,7 @@ namespace sportDataLayer
 
         public static int createMemberSubscriptions(
               int memberID,
+              int addBy,
               int CoachsTraingingID,
               decimal fee,
               DateTime startDate,
@@ -116,8 +121,8 @@ namespace sportDataLayer
                 {
                     con.Open();
                     string query = @"INSERT INTO MemberSubscriptions
-                                    (CoachsTraingingID,memberID,fee,startDate,endDate)
-                                    VALUES (@CoachsTraingingID,@memberID,@fee,@startDate ,@endDate);
+                                    (CoachsTraingingID,addBy,memberID,fee,startDate,endDate)
+                                    VALUES (@CoachsTraingingID,@addBy,@memberID,@fee,@startDate ,@endDate);
                                     select SCOPE_IDENTITY();";
 
                     using (SqlCommand cmd = new SqlCommand(query, con))
@@ -125,6 +130,7 @@ namespace sportDataLayer
 
                         cmd.Parameters.AddWithValue("@CoachsTraingingID", CoachsTraingingID);
                         cmd.Parameters.AddWithValue("@memberID", memberID);
+                        cmd.Parameters.AddWithValue("@addBy", addBy);
                         cmd.Parameters.AddWithValue("@fee", fee);
                         cmd.Parameters.AddWithValue("@startDate", startDate);
                         cmd.Parameters.AddWithValue("@endDate", endDate);
@@ -182,6 +188,7 @@ namespace sportDataLayer
         public static bool updateMemberSubscriptoion(
             int id,
             int memberID,
+            int addBy,
              int CoachsTraingingID,
              decimal fee,
              DateTime startDate,
@@ -195,7 +202,9 @@ namespace sportDataLayer
                 {
                     con.Open();
                     string query = @"UPDATE MemberSubscriptions
-                                     SET CoachsTraingingID = @CoachsTraingingID,memberID = @memberID, 
+                                     SET CoachsTraingingID = @CoachsTraingingID,
+                                      addBy = @addBy,
+                                     ,memberID = @memberID, 
                                     fee = @fee,startDate = @startDate,endDate = @endDate
                                      WHERE memberSubscriptionID = @id";
 
@@ -204,6 +213,7 @@ namespace sportDataLayer
                         cmd.Parameters.AddWithValue("@id", id);
                         cmd.Parameters.AddWithValue("@CoachsTraingingID", CoachsTraingingID);
                         cmd.Parameters.AddWithValue("@memberID", memberID);
+                        cmd.Parameters.AddWithValue("@addBy", addBy);
                         cmd.Parameters.AddWithValue("@fee", fee);
                         cmd.Parameters.AddWithValue("@startDate", startDate);
                         cmd.Parameters.AddWithValue("@endDate", endDate);
