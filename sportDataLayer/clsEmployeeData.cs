@@ -13,7 +13,7 @@ namespace sportDataLayer
             (
             int id,
             ref int personID,
-            ref int addBy,
+            ref int? addBy,
             ref string userName,
             ref string password,
             ref DateTime createDate,
@@ -40,7 +40,7 @@ namespace sportDataLayer
                             {
                                 isFound = true;
                                 personID = (int)reader["personID"];
-                                addBy = (int)reader["addBy"];
+                                addBy = (int?)reader["addBy"];
                                 createDate = (DateTime)reader["createdDate"];
                                 userName = (string)reader["userName"];
                                 password = (string)reader["password"];
@@ -68,7 +68,7 @@ namespace sportDataLayer
             (
             ref int id,
              int personID,
-             ref int addBy,
+             ref int? addBy,
             ref string userName,
             ref string password,
             ref DateTime createdDate,
@@ -94,7 +94,7 @@ namespace sportDataLayer
                             if (reader.Read())
                             {
                                 isFound = true;
-                                addBy = (int)reader["addBy"];
+                                addBy = (int?)reader["addBy"];
                                 userName = (string)reader["userName"];
                                 createdDate = (DateTime)reader["createdDate"];
                                 id = (int)reader["employeeID"];
@@ -124,7 +124,7 @@ namespace sportDataLayer
             (
             ref int id,
             ref int personID,
-            ref int addBy,
+            ref int? addBy,
             string userName,
             string password,
             ref DateTime createdDate,
@@ -152,7 +152,7 @@ namespace sportDataLayer
                             {
                                 isFound = true;
                                 personID = (int)reader["personID"];
-                                addBy = (int)reader["addBy"];
+                                addBy = (int?)reader["addBy"];
                                 createdDate = (DateTime)reader["createdDate"];
                                 id = (int)reader["employeeID"];
                                 isActive = (bool)reader["isActive"];
@@ -180,7 +180,7 @@ namespace sportDataLayer
         public static int createEmployee
             (
             int personID,
-            int addBy,
+            int? addBy,
             string userName,
             string password,
             bool isActive
@@ -203,7 +203,10 @@ namespace sportDataLayer
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@personID", personID);
-                        cmd.Parameters.AddWithValue("@addBy", addBy);
+                        if (addBy == null)
+                            cmd.Parameters.AddWithValue("@addBy", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@addBy", addBy);
                         cmd.Parameters.AddWithValue("@userName", userName);
                         cmd.Parameters.AddWithValue("@password", password);
                         cmd.Parameters.AddWithValue("@isActive", personID);
@@ -232,9 +235,9 @@ namespace sportDataLayer
 
         public static bool updateEmployee
             (
-            int id,
+            int? id,
             int personID,
-            int addBy,
+            int? addBy,
             string userName,
             string password,
             bool isActive
@@ -261,6 +264,10 @@ namespace sportDataLayer
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@id", id);
+                        if (addBy == null)
+                            cmd.Parameters.AddWithValue("@addBy", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@addBy", addBy);
                         cmd.Parameters.AddWithValue("@personID", personID);
                         cmd.Parameters.AddWithValue("@userName", userName);
                         cmd.Parameters.AddWithValue("@password", password);

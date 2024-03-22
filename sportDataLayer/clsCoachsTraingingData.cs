@@ -7,10 +7,11 @@ namespace sportDataLayer
     public class clsCoachsTraingingData
     {
         static string connectionUrl = ConfigurationManager.ConnectionStrings["conncetionUrl"].ConnectionString;
+
         public static bool findCoachsTrainging(
-             ref int id,
-              int coacheID,
-             ref int addBy,
+             ref int coacheID,
+              int id,
+             ref int? addBy,
              ref int sportID,
              ref bool isAvaliable,
              ref string dayilyStartAt,
@@ -37,7 +38,7 @@ namespace sportDataLayer
                             if (reader.Read())
                             {
                                 isFound = true;
-                                addBy = (int)reader["addBy"];
+                                addBy = (int?)reader["addBy"];
                                 sportID = (int)reader["sportID"];
                                 coacheID = (int)reader["coacheID"];
                                 isAvaliable = (bool)reader["isAvaliable"];
@@ -68,8 +69,9 @@ namespace sportDataLayer
 
 
         public static bool findCoachsTrainging(
-             ref int id,
               int coacheID,
+             ref  int id,
+             ref int? addBy,
              ref int sportID,
              ref bool isAvaliable,
              ref string dayilyStartAt,
@@ -98,6 +100,7 @@ namespace sportDataLayer
                                 isFound = true;
                                 id = (int)reader["CoachsTraingingID"];
                                 sportID = (int)reader["sportID"];
+                                addBy = (int?)reader["addBy"];
                                 isAvaliable = (bool)reader["isAvaliable"];
                                 dayilyStartAt = (string)reader["dayilyStartAt"];
                                 dayilyEndAt = (string)reader["dayilyEndAt"];
@@ -128,7 +131,7 @@ namespace sportDataLayer
         public static int createCoachesTraineing(
 
              int coacheID,
-             int addBy,
+             int? addBy,
              int sportID,
              bool isAvaliable,
              string dayilyStartAt,
@@ -153,7 +156,10 @@ namespace sportDataLayer
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@coachID", coacheID);
-                        cmd.Parameters.AddWithValue("@addBy", addBy);
+                        if (addBy == null)
+                            cmd.Parameters.AddWithValue("@addBy", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@addBy", addBy);
                         cmd.Parameters.AddWithValue("@sportID", sportID);
                         cmd.Parameters.AddWithValue("@isAvaliable", isAvaliable);
                         cmd.Parameters.AddWithValue("@dayilyStartAt", dayilyStartAt);
@@ -182,7 +188,7 @@ namespace sportDataLayer
         public static bool updateCoachTraining(
                  int id,
                  int coachID,
-                 int addBy,
+                 int? addBy,
                  int sportID,
                  bool isAvaliable,
                  string dayilyStartAt,
@@ -213,7 +219,11 @@ namespace sportDataLayer
                     {
                         cmd.Parameters.AddWithValue("@id", id);
                         cmd.Parameters.AddWithValue("@coachID", coachID);
-                        cmd.Parameters.AddWithValue("@addBy", addBy);
+                        if (addBy == null)
+                            cmd.Parameters.AddWithValue("@addBy", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@addBy", addBy);
+
                         cmd.Parameters.AddWithValue("@sportID", sportID);
                         cmd.Parameters.AddWithValue("@isAvaliable", isAvaliable);
                         cmd.Parameters.AddWithValue("@dayilyStartAt", dayilyStartAt);
@@ -353,9 +363,13 @@ namespace sportDataLayer
                     string query = @"select * from CoachesTraingings where CoachsTraingingID = @id";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
-                        cmd.Parameters.Add("@id", id);
+                        cmd.Parameters.AddWithValue("@id", id);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            dtCaochesTraingin.Load(reader);
 
-                        dtCaochesTraingin.Load(cmd.ExecuteReader());
+                        }
+
 
                     }
                 }

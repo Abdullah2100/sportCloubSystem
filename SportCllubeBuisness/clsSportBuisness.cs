@@ -9,7 +9,7 @@ namespace SportCllubeBuisness
         public enum enMode { add, update };
         public enMode mode { get; set; }
         public int id { get; set; }
-        public int addBy { get; set; }
+        public int? addBy { get; set; }
         public string name { get; set; }
         public DateTime createdAt { get; set; }
         public bool isActive { get; set; }
@@ -18,13 +18,13 @@ namespace SportCllubeBuisness
         {
             this.mode = enMode.add;
             this.id = 0;
-            this.addBy = 0;
+            this.addBy = null;
             this.name = "";
             this.createdAt = DateTime.Now;
             this.isActive = true;
         }
 
-        private clsSportBuisness(enMode mode, int id, int addBy, string name, DateTime createdAt, bool isActive)
+        private clsSportBuisness(enMode mode, int id, int? addBy, string name, DateTime createdAt, bool isActive)
         {
             this.mode = mode;
             this.id = id;
@@ -36,7 +36,7 @@ namespace SportCllubeBuisness
 
         public static clsSportBuisness findSport(int id)
         {
-            int addBy = 0;
+            int? addBy = null;
             string name = "ahemd";
             DateTime createdAt = DateTime.Now;
             bool isActive = true;
@@ -51,7 +51,7 @@ namespace SportCllubeBuisness
         public static clsSportBuisness findSport(string name)
         {
             int id = 0;
-            int addBy = 0;
+            int? addBy = null;
             DateTime createdAt = DateTime.Now;
             bool isActive = true;
 

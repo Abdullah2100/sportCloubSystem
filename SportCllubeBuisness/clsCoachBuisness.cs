@@ -10,7 +10,7 @@ namespace SportCllubeBuisness
         public enMode mode { get; set; }
         public int id { get; set; }
         public int personID { get; set; }
-        public int addBy { get; set; }
+        public int? addBy { get; set; }
         public DateTime startTraingDate { get; set; }
         public DateTime? endTraingDate { get; set; }
         public bool isActive { get; set; }
@@ -32,11 +32,11 @@ namespace SportCllubeBuisness
             this.startTraingDate = DateTime.Now;
             this.endTraingDate = null;
             this.isActive = true;
-            this.addBy = 0;
+            this.addBy = null;
 
         }
 
-        private clsCoachBuisness(enMode mode, int id, int personID, int addBy, DateTime startTraingDate, DateTime? endTraingDate, bool isActive)
+        private clsCoachBuisness(enMode mode, int id, int personID, int? addBy, DateTime startTraingDate, DateTime? endTraingDate, bool isActive)
         {
 
             this.mode = mode;
@@ -55,7 +55,7 @@ namespace SportCllubeBuisness
         public static clsCoachBuisness findCoachByID(int id)
         {
             int personID = 0;
-            int addBy = 0;
+            int? addBy = null;
             DateTime startTraingDate = DateTime.Now;
             DateTime? endTraingDate = null;
             bool isActive = false;
@@ -79,7 +79,7 @@ namespace SportCllubeBuisness
 
 
             int personID = _person.id;
-            int addBy = 0;
+            int? addBy = null;
             int id = 0;
             DateTime startTraingDate = DateTime.Now;
             DateTime? endTraingDate = null;
@@ -98,12 +98,13 @@ namespace SportCllubeBuisness
         public static clsCoachBuisness findCoachByPersonID(int personID)
         {
             int id = 0;
+            int? addBy = null;
             DateTime startTraingDate = DateTime.Now;
             DateTime? endTraingDate = null;
             bool isActive = false;
-            if (clsCoachData.findCoachByPersonID(ref id, personID, ref startTraingDate, ref endTraingDate, ref isActive))
+            if (clsCoachData.findCoachByPersonID(ref id, personID, ref addBy, ref startTraingDate, ref endTraingDate, ref isActive))
             {
-                return new clsCoachBuisness(enMode.update, id, personID, startTraingDate, endTraingDate, isActive); ;
+                return new clsCoachBuisness(enMode.update, id, personID, addBy, startTraingDate, endTraingDate, isActive); ;
             }
 
             return null;

@@ -12,7 +12,7 @@ namespace sportDataLayer
         public static bool findMemberSubscriptionByID(
              int id,
             ref int memberID,
-            ref int addBy,
+            ref int? addBy,
             ref int CoachsTraingingID,
             ref decimal fee,
             ref DateTime startDate,
@@ -36,7 +36,7 @@ namespace sportDataLayer
                             {
                                 isFound = true;
                                 memberID = (int)reader["memberID"];
-                                addBy = (int)reader["addBy"];
+                                addBy = (int?)reader["addBy"];
                                 CoachsTraingingID = (int)reader["CoachsTraingingID"];
                                 fee = (decimal)reader["fee"];
                                 startDate = (DateTime)reader["startDate"];
@@ -58,7 +58,7 @@ namespace sportDataLayer
         public static bool findMemberSubscriptionByMemberID(
                  ref int id,
                   int memberID,
-                 ref int addBy,
+                 ref int? addBy,
                  ref int CoachsTraingingID,
                  ref decimal fee,
                  ref DateTime startDate,
@@ -82,7 +82,10 @@ namespace sportDataLayer
                             {
                                 isFound = true;
                                 id = (int)reader["memberSubscriptionID"];
-                                addBy = (int)reader["addBy"];
+                                if (addBy == null)
+                                    cmd.Parameters.AddWithValue("@addBy", DBNull.Value);
+                                else
+                                    cmd.Parameters.AddWithValue("@addBy", addBy);
                                 CoachsTraingingID = (int)reader["CoachsTraingingID"];
                                 fee = (decimal)reader["fee"];
                                 startDate = (DateTime)reader["startDate"];
@@ -107,7 +110,7 @@ namespace sportDataLayer
 
         public static int createMemberSubscriptions(
               int memberID,
-              int addBy,
+              int? addBy,
               int CoachsTraingingID,
               decimal fee,
               DateTime startDate,
@@ -130,7 +133,10 @@ namespace sportDataLayer
 
                         cmd.Parameters.AddWithValue("@CoachsTraingingID", CoachsTraingingID);
                         cmd.Parameters.AddWithValue("@memberID", memberID);
-                        cmd.Parameters.AddWithValue("@addBy", addBy);
+                        if (addBy == null)
+                            cmd.Parameters.AddWithValue("@addBy", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@addBy", addBy);
                         cmd.Parameters.AddWithValue("@fee", fee);
                         cmd.Parameters.AddWithValue("@startDate", startDate);
                         cmd.Parameters.AddWithValue("@endDate", endDate);
@@ -188,7 +194,7 @@ namespace sportDataLayer
         public static bool updateMemberSubscriptoion(
             int id,
             int memberID,
-            int addBy,
+            int? addBy,
              int CoachsTraingingID,
              decimal fee,
              DateTime startDate,
@@ -213,7 +219,10 @@ namespace sportDataLayer
                         cmd.Parameters.AddWithValue("@id", id);
                         cmd.Parameters.AddWithValue("@CoachsTraingingID", CoachsTraingingID);
                         cmd.Parameters.AddWithValue("@memberID", memberID);
-                        cmd.Parameters.AddWithValue("@addBy", addBy);
+                        if (addBy == null)
+                            cmd.Parameters.AddWithValue("@addBy", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@addBy", addBy);
                         cmd.Parameters.AddWithValue("@fee", fee);
                         cmd.Parameters.AddWithValue("@startDate", startDate);
                         cmd.Parameters.AddWithValue("@endDate", endDate);

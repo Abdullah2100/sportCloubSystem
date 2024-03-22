@@ -12,7 +12,7 @@ namespace sportDataLayer
         public static bool findMemberByPersonID(
             ref int id,
             int personID,
-            ref int addBy,
+            ref int? addBy,
             ref bool isActive
     )
         {
@@ -33,7 +33,7 @@ namespace sportDataLayer
                             {
                                 isFound = true;
                                 id = (int)reader["memberID"];
-                                addBy = (int)reader["addBy"];
+                                addBy = (int?)reader["addBy"];
                                 isActive = (bool)reader["isActive"];
                             }
                         }
@@ -53,7 +53,7 @@ namespace sportDataLayer
 
             int id,
             ref int personID,
-            ref int addBy,
+            ref int? addBy,
             ref bool isActive
     )
         {
@@ -74,7 +74,7 @@ namespace sportDataLayer
                             {
                                 isFound = true;
                                 personID = (int)reader["personID"];
-                                addBy = (int)reader["addBy"];
+                                addBy = (int?)reader["addBy"];
                                 isActive = (bool)reader["isActive"];
                             }
                         }
@@ -98,7 +98,7 @@ namespace sportDataLayer
 
         public static int createMember(
              int personID,
-             int addBy,
+             int? addBy,
              bool isActive
             )
         {
@@ -113,8 +113,13 @@ namespace sportDataLayer
 
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
+                        if (addBy == null)
+                            cmd.Parameters.AddWithValue("@addBy", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@addBy", addBy);
 
                         cmd.Parameters.AddWithValue("@personID", personID);
+
                         cmd.Parameters.AddWithValue("@isActive", isActive);
 
                         object result = cmd.ExecuteScalar();
@@ -171,7 +176,7 @@ namespace sportDataLayer
 
             int id,
              int personID,
-             int addBy,
+             int? addBy,
              bool isActive
             )
         {
@@ -193,6 +198,10 @@ namespace sportDataLayer
                         cmd.Parameters.AddWithValue("@id", id);
                         cmd.Parameters.AddWithValue("@personID", personID);
                         cmd.Parameters.AddWithValue("@isActive", isActive);
+                        if (addBy == null)
+                            cmd.Parameters.AddWithValue("@addBy", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@addBy", addBy);
                         int result = cmd.ExecuteNonQuery();
                         if (result > 0)
                         {

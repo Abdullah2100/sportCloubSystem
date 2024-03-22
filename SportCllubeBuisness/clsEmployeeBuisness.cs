@@ -8,9 +8,9 @@ namespace SportCllubeBuisness
     {
         enum enMode { add, update }
         enMode mode { get; set; }
-        public int id { get; set; }
+        public int? id { get; set; }
         public int personID { get; set; }
-        public int addBy { get; set; }
+        public int? addBy { get; set; }
         public DateTime createDate { get; set; }
         public string userName { get; set; }
         public string password { get; set; }
@@ -19,9 +19,9 @@ namespace SportCllubeBuisness
 
         public clsEmployeeBuisness()
         {
-            id = 0;
+            id = null;
             personID = 0;
-            addBy = 0;
+            addBy = null;
             createDate = DateTime.Now;
             userName = "";
             password = "";
@@ -30,7 +30,7 @@ namespace SportCllubeBuisness
             mode = enMode.add;
         }
 
-        private clsEmployeeBuisness(enMode mode, int id, int personID, int addBy, string userName, string password, DateTime createDate, bool isActive)
+        private clsEmployeeBuisness(enMode mode, int? id, int personID, int? addBy, string userName, string password, DateTime createDate, bool isActive)
         {
             this.id = id;
             this.personID = personID;
@@ -80,6 +80,7 @@ namespace SportCllubeBuisness
                     {
                         if (_add())
                         {
+                            mode = enMode.update;
                             return true;
                         }
                         return false;
@@ -98,7 +99,7 @@ namespace SportCllubeBuisness
         public static clsEmployeeBuisness findEmployeeByID(int id)
         {
             int personID = 0;
-            int addBy = 0;
+            int? addBy = null;
             DateTime createDate = DateTime.Now;
             string userName = "";
             string password = "";
@@ -115,7 +116,7 @@ namespace SportCllubeBuisness
         public static clsEmployeeBuisness findEmployeeByPersonID(int personID)
         {
             int id = 0;
-            int addBy = 0;
+            int? addBy = null;
             DateTime createDate = DateTime.Now;
             string userName = "";
             string password = "";
@@ -133,7 +134,7 @@ namespace SportCllubeBuisness
         public static clsEmployeeBuisness findEmployeeByUserNameAndPassword(string userName, string password)
         {
             int id = 0;
-            int addBy = 0;
+            int? addBy = null;
             DateTime createDate = DateTime.Now;
             int personID = 0;
             bool isActive = false;

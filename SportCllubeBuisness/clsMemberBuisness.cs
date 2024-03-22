@@ -9,7 +9,7 @@ namespace SportCllubeBuisness
         public enMode mode { get; set; }
         public int id { get; set; }
         public int personID { get; set; }
-        public int addBy { get; set; }
+        public int? addBy { get; set; }
         public bool isActive { get; set; }
 
         public clsPeopleBuisness personInfo;
@@ -19,12 +19,12 @@ namespace SportCllubeBuisness
             this.mode = enMode.add;
             this.id = 0;
             this.personID = 0;
-            this.addBy = 0;
+            this.addBy = null;
             this.isActive = false;
 
         }
 
-        private clsMemberBuisness(enMode mode, int id, int personID, int addBy, bool isActive)
+        private clsMemberBuisness(enMode mode, int id, int personID, int? addBy, bool isActive)
         {
             this.mode = mode;
             this.id = id;
@@ -38,7 +38,7 @@ namespace SportCllubeBuisness
         public static clsMemberBuisness findMemberByID(int id)
         {
             int personID = 0;
-            int addBy = 0;
+            int? addBy = null;
             bool isActive = false;
             if (clsMemberData.findMemberByID(id, ref personID, ref addBy, ref isActive))
             {
@@ -52,7 +52,7 @@ namespace SportCllubeBuisness
         public static clsMemberBuisness findMemberByPersonID(int personID)
         {
             int id = 0;
-            int addBy = 0;
+            int? addBy = null;
             bool isActive = false;
             if (clsMemberData.findMemberByPersonID(ref id, personID, ref addBy, ref isActive))
             {

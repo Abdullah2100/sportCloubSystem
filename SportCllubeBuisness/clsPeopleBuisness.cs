@@ -74,7 +74,7 @@ namespace SportCllubeBuisness
             return null;
         }
 
-        protected static clsPeopleBuisness findPeopleByFullName(string fullName)
+        public  static clsPeopleBuisness findPeopleByFullName(string fullName)
         {
             int id = 0;
             string firstName = "";

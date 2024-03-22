@@ -11,7 +11,7 @@ namespace SportCllubeBuisness
         public int id { get; set; }
         public int coatchTrainingID { get; set; }
         public int memberID { get; set; }
-        public int addBy { get; set; }
+        public int? addBy { get; set; }
         public DateTime startDate { get; set; }
         public DateTime endDate { get; set; }
         public decimal fee { get; set; }
@@ -25,14 +25,14 @@ namespace SportCllubeBuisness
             this.id = 0;
             this.coatchTrainingID = 0;
             this.memberID = 0;
-            this.addBy = 0;
+            this.addBy = null;
             this.startDate = DateTime.Now;
             this.endDate = DateTime.Now;
             this.fee = 0;
         }
 
         private clsMemberSubscriptionsBuisness(
-            enMode mode, int id, int coatchTrainingID, int memberID, int addBy, DateTime startDate, DateTime endDate, decimal fee)
+            enMode mode, int id, int coatchTrainingID, int memberID, int? addBy, DateTime startDate, DateTime endDate, decimal fee)
         {
             this.mode = mode;
             this.id = id;
@@ -51,7 +51,7 @@ namespace SportCllubeBuisness
         {
             int coatchTrainingID = 0;
             int memberID = 0;
-            int addBy = 0;
+            int? addBy = null;
             DateTime startDate = DateTime.Now;
             DateTime endDate = DateTime.Now;
             decimal fee = 0;
@@ -67,7 +67,8 @@ namespace SportCllubeBuisness
         {
 
             int id = 0;
-            int addBy = 0;
+            int? addBy = null;
+
             int coatchTrainingID = 0;
             DateTime startDate = DateTime.Now;
             DateTime endDate = DateTime.Now;

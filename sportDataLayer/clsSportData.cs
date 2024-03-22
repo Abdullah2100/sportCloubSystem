@@ -13,7 +13,7 @@ namespace sportDataLayer
         //Find Sport
         public static bool findSportByID(
             int id,
-            ref int addBy,
+            ref int? addBy,
             ref string name,
             ref DateTime createdDate,
             ref bool isActive
@@ -37,7 +37,7 @@ namespace sportDataLayer
                             {
                                 isFound = true;
                                 name = (string)reader["name"];
-                                addBy = (int)reader["addBy"];
+                                addBy = (int?)reader["addBy"];
                                 createdDate = (DateTime)reader["createdDate"];
                                 isActive = (bool)reader["isActive"];
 
@@ -57,7 +57,7 @@ namespace sportDataLayer
 
         public static bool findSportByName(
             ref int id,
-            ref int addBy,
+            ref int? addBy,
             string name,
             ref DateTime createdDate,
             ref bool isActive
@@ -82,7 +82,7 @@ namespace sportDataLayer
                             {
                                 isFound = true;
                                 id = (int)reader["sportID"];
-                                addBy = (int)reader["addBy"];
+                                addBy = (int?)reader["addBy"];
                                 createdDate = (DateTime)reader["createdDate "];
                                 isActive = (bool)reader["isActive"];
 
@@ -104,7 +104,7 @@ namespace sportDataLayer
 
         // Curde Operation
 
-        public static bool addNewSport(int addBy,string name)
+        public static bool addNewSport(int? addBy, string name)
         {
             bool isAdd = false;
 
@@ -116,7 +116,10 @@ namespace sportDataLayer
                     string query = @"insert into Sports (addBy,name) values (@addBy,@name) ";
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
-                        cmd.Parameters.AddWithValue("@addBy", addBy);
+                        if (addBy == null)
+                            cmd.Parameters.AddWithValue("@addBy", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@addBy", addBy);
                         cmd.Parameters.AddWithValue("@name", name);
                         int reader = cmd.ExecuteNonQuery();
                         if (reader > 0)
@@ -135,7 +138,7 @@ namespace sportDataLayer
             return isAdd;
         }
 
-        public static bool updateSport(int id,int addBy, string name, bool isActive)
+        public static bool updateSport(int id, int? addBy, string name, bool isActive)
         {
             bool isAdd = false;
 
@@ -149,7 +152,10 @@ namespace sportDataLayer
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
                         cmd.Parameters.AddWithValue("@id", id);
-                        cmd.Parameters.AddWithValue("@addBy", addBy);
+                        if (addBy == null)
+                            cmd.Parameters.AddWithValue("@addBy", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@addBy", addBy);
                         cmd.Parameters.AddWithValue("@name", name);
                         cmd.Parameters.AddWithValue("@isActive", isActive);
                         int reader = cmd.ExecuteNonQuery();

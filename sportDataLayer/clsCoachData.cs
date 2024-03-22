@@ -13,7 +13,7 @@ namespace sportDataLayer
             (
             int id,
             ref int personID,
-            ref int addBy,
+            ref int? addBy,
             ref DateTime startTraingDate,
             ref DateTime? endTraingDate,
             ref bool isActive)
@@ -38,7 +38,7 @@ namespace sportDataLayer
                             {
                                 isFound = true;
                                 personID = (int)reader["personID"];
-                                addBy = (int)reader["addBy"];
+                                addBy = (int?)reader["addBy"];
                                 startTraingDate = (DateTime)reader["startTraingDate"];
                                 if (reader["endTraingDate"] == DBNull.Value)
                                     endTraingDate = null;
@@ -68,7 +68,7 @@ namespace sportDataLayer
         (
             ref int id,
             int personID,
-            ref int addBy,
+            ref int? addBy,
             ref DateTime startTraingDate,
             ref DateTime? endTraingDate,
             ref bool isActive)
@@ -93,7 +93,7 @@ namespace sportDataLayer
                             {
                                 isFound = true;
                                 id = (int)reader["coacheID"];
-                                addBy = (int)reader["addBy"];
+                                addBy = (int?)reader["addBy"];
                                 startTraingDate = (DateTime)reader["startTraingDate"];
                                 if (reader["endTraingDate"] == DBNull.Value)
                                     endTraingDate = null;
@@ -123,7 +123,7 @@ namespace sportDataLayer
         public static int createCoach
            (
                int personID,
-                int addBy,
+                int? addBy,
                 DateTime startTraingDate,
                 DateTime? endTraingDate,
                 bool isActive)
@@ -147,7 +147,10 @@ namespace sportDataLayer
                         cmd.Parameters.AddWithValue("@personID", personID);
                         cmd.Parameters.AddWithValue("@startTraingDate", personID);
                         cmd.Parameters.AddWithValue("@isActive", personID);
-                        cmd.Parameters.AddWithValue("@addBy", addBy);
+                        if (addBy == null)
+                            cmd.Parameters.AddWithValue("@addBy", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@addBy", addBy);
                         object result = cmd.ExecuteScalar();
                         if (result != null && int.TryParse(result.ToString(), out int cachID))
                         {
@@ -175,7 +178,7 @@ namespace sportDataLayer
                 (
                     int id,
                     int personID,
-                    int addBy,
+                    int? addBy,
                      DateTime startTraingDate,
                      DateTime? endTraingDate,
                      bool isActive)
@@ -203,8 +206,10 @@ namespace sportDataLayer
                         cmd.Parameters.AddWithValue("@personID", personID);
                         cmd.Parameters.AddWithValue("@startTraingDate", personID);
                         cmd.Parameters.AddWithValue("@isActive", personID);
-                        cmd.Parameters.AddWithValue("@addBy", addBy);
-                        int result = cmd.ExecuteNonQuery();
+                        if (addBy == null)
+                            cmd.Parameters.AddWithValue("@addBy", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@addBy", addBy); int result = cmd.ExecuteNonQuery();
                         if (result > 0)
                         {
                             isUpdated = true;
