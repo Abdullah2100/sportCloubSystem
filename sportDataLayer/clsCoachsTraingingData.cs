@@ -70,7 +70,7 @@ namespace sportDataLayer
 
         public static bool findCoachsTrainging(
               int coacheID,
-             ref  int id,
+             ref int id,
              ref int? addBy,
              ref int sportID,
              ref bool isAvaliable,
@@ -370,7 +370,6 @@ namespace sportDataLayer
 
                         }
 
-
                     }
                 }
 
@@ -433,12 +432,9 @@ namespace sportDataLayer
                             {
                                 isFound = true;
                             }
-
                         }
-
                     }
                 }
-
             }
             catch (Exception ex)
             {

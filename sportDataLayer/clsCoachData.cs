@@ -266,6 +266,8 @@ namespace sportDataLayer
             catch (Exception ex)
             {
                 Console.WriteLine("Error is : " + ex.Message);
+                clsAppEventHandler.createNewEventLog(ex.Message);
+
             }
             return isUpdated;
 
@@ -458,6 +460,8 @@ namespace sportDataLayer
             catch (Exception ex)
             {
                 Console.WriteLine("Error is : " + ex.Message);
+                clsAppEventHandler.createNewEventLog(ex.Message);
+
             }
             return isUpdated;
 

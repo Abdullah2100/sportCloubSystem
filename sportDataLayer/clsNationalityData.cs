@@ -38,6 +38,8 @@ namespace sportDataLayer
             catch (Exception ex)
             {
                 Console.WriteLine("Error is :" + ex.Message);
+                clsAppEventHandler.createNewEventLog(ex.Message);
+
             }
             return isFound;
         }
@@ -71,6 +73,8 @@ namespace sportDataLayer
             catch (Exception ex)
             {
                 Console.WriteLine("Error is :" + ex.Message);
+                clsAppEventHandler.createNewEventLog(ex.Message);
+
             }
             return isFound;
         }
@@ -102,6 +106,8 @@ namespace sportDataLayer
             catch (Exception ex)
             {
                 Console.WriteLine("Error is :" + ex.Message);
+                clsAppEventHandler.createNewEventLog(ex.Message);
+
             }
             return dtNaionalties;
         }
@@ -134,6 +140,8 @@ namespace sportDataLayer
             catch (Exception ex)
             {
                 Console.WriteLine("Error is :" + ex.Message);
+                clsAppEventHandler.createNewEventLog(ex.Message);
+
             }
             return isUpdate;
         }

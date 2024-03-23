@@ -55,6 +55,8 @@ namespace sportDataLayer
             catch (Exception ex)
             {
                 Console.WriteLine("Error is :" + ex.Message);
+                clsAppEventHandler.createNewEventLog(ex.Message);
+
             }
             return isFound;
 
@@ -110,6 +112,8 @@ namespace sportDataLayer
             catch (Exception ex)
             {
                 Console.WriteLine("Error is :" + ex.Message);
+                clsAppEventHandler.createNewEventLog(ex.Message);
+
             }
             return isFound;
 
@@ -167,6 +171,8 @@ namespace sportDataLayer
             catch (Exception ex)
             {
                 Console.WriteLine("Error is :" + ex.Message);
+                clsAppEventHandler.createNewEventLog(ex.Message);
+
             }
             return isFound;
 
@@ -224,6 +230,8 @@ namespace sportDataLayer
             catch (Exception ex)
             {
                 Console.WriteLine("Error is :" + ex.Message);
+                clsAppEventHandler.createNewEventLog(ex.Message);
+
             }
             return isFound;
 
@@ -253,6 +261,7 @@ namespace sportDataLayer
                     con.Open();
                     string query = @"insert into Peoples  
                                    (fristName,secondName,thirdName,familyName,phone,gender,brithday,nationalityID,address)
+,
                                    VALUES(@firstName,@secondName,@thirdname,@familyName,@phone,@gender,@brithDay,@nationalityID,@address)
                                    select SCOPE_IDENTITY() ;  
                                    ";
@@ -281,6 +290,8 @@ namespace sportDataLayer
             catch (Exception ex)
             {
                 Console.WriteLine("Error is :" + ex.Message);
+                clsAppEventHandler.createNewEventLog(ex.Message);
+
             }
             return peopleID;
 
@@ -313,6 +324,7 @@ namespace sportDataLayer
             catch (Exception ex)
             {
                 Console.WriteLine("Error is :" + ex.Message);
+                clsAppEventHandler.createNewEventLog(ex.Message);
             }
             return isDelete;
 
@@ -372,6 +384,8 @@ namespace sportDataLayer
             catch (Exception ex)
             {
                 Console.WriteLine("Error is :" + ex.Message);
+                clsAppEventHandler.createNewEventLog(ex.Message);
+
             }
             return isAdd;
 
@@ -410,6 +424,8 @@ namespace sportDataLayer
             catch (Exception ex)
             {
                 Console.WriteLine("Error is :" + ex.Message);
+                clsAppEventHandler.createNewEventLog(ex.Message);
+
             }
             return dtPoepleList;
 
@@ -443,6 +459,8 @@ namespace sportDataLayer
             catch (Exception ex)
             {
                 Console.WriteLine("Error is :" + ex.Message);
+                clsAppEventHandler.createNewEventLog(ex.Message);
+
             }
             return isFound;
 
