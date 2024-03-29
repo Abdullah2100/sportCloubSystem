@@ -12,7 +12,7 @@ This project has many sections like people, members, coaches, employees, member 
 The data layer ensures integrity with the database, and the business layer handles the connection between the app UI and the data layer.
 
 <p align="center">
-  <img src="https://github.com/Abdullah2100/sportCloubSystem/blob/main/images/imge_1.png" width="350" title="hover text">
+  <img src="https://github.com/Abdullah2100/sportCloubSystem/blob/main/images/image_1.png" width="350" title="hover text">
   <img src="https://github.com/Abdullah2100/sportCloubSystem/blob/main/images/imge_2.png" width="350" title="hover text">
   <img src="https://github.com/Abdullah2100/sportCloubSystem/blob/main/images/iamge_3.png" width="350" title="hover text">
   <img src="https://github.com/Abdullah2100/sportCloubSystem/blob/main/images/imge_4.png" width="350" title="hover text">
