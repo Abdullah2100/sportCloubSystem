@@ -13,14 +13,14 @@ The data layer ensures integrity with the database, and the business layer handl
 
 <p align="center">
   <img src="https://github.com/Abdullah2100/sportCloubSystem/blob/main/images/image_1.png" width="350" title="hover text">
-  <img src="https://github.com/Abdullah2100/sportCloubSystem/blob/main/images/imge_2.png" width="350" title="hover text">
+  <img src="https://github.com/Abdullah2100/sportCloubSystem/blob/main/images/image_2.png" width="350" title="hover text">
   <img src="https://github.com/Abdullah2100/sportCloubSystem/blob/main/images/iamge_3.png" width="350" title="hover text">
-  <img src="https://github.com/Abdullah2100/sportCloubSystem/blob/main/images/imge_4.png" width="350" title="hover text">
-  <img src="https://github.com/Abdullah2100/sportCloubSystem/blob/main/images/imge_5.png" width="350" title="hover text">
-  <img src="https://github.com/Abdullah2100/sportCloubSystem/blob/main/images/imge_6.png" width="350" title="hover text">
-  <img src="https://github.com/Abdullah2100/sportCloubSystem/blob/main/images/imge_7.png" width="350" title="hover text">
-  <img src="https://github.com/Abdullah2100/sportCloubSystem/blob/main/images/imge_8.png" width="350" title="hover text">
-  <img src="https://github.com/Abdullah2100/sportCloubSystem/blob/main/images/imge_9.png" width="350" title="hover text">
+  <img src="https://github.com/Abdullah2100/sportCloubSystem/blob/main/images/image_4.png" width="350" title="hover text">
+  <img src="https://github.com/Abdullah2100/sportCloubSystem/blob/main/images/image_5.png" width="350" title="hover text">
+  <img src="https://github.com/Abdullah2100/sportCloubSystem/blob/main/images/image_6.png" width="350" title="hover text">
+  <img src="https://github.com/Abdullah2100/sportCloubSystem/blob/main/images/image_7.png" width="350" title="hover text">
+  <img src="https://github.com/Abdullah2100/sportCloubSystem/blob/main/images/image_8.png" width="350" title="hover text">
+  <img src="https://github.com/Abdullah2100/sportCloubSystem/blob/main/images/image_9.png" width="350" title="hover text">
 </p>
 ### Built With
 
